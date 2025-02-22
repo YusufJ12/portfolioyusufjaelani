@@ -53,8 +53,8 @@ export function HeroSection() {
             pauseDuration={2000}
             cursorStyle="bar"
             phrases={[
-              "Web Developer",
-              "Full Stack Developer",
+              "Android Developer",
+              "Full Stack Web Developer",
             ]}
             className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-sa-blue  to-sa-dark-primary bg-clip-text text-transparent"
           />
@@ -63,7 +63,7 @@ export function HeroSection() {
           className="text-gray-600 dark:text-[#66768f] text-lg max-w-2xl mx-auto animate-slideInUp"
           style={{ animationDelay: "0.4s" }}
         >
-          Full Stack Developer yang berfokus pada pembuatan{" "}
+          Full Stack Web Developer yang berfokus pada pembuatan{" "}
           <span className="text-[#ffe400]">aplikasi web berkualitas tinggi</span>.
           Saya membantu bisnis dan individu mengubah ide mereka menjadi{" "}
           <span className="text-[#ffe400]">produk digital yang sukses</span>{" "}

@@ -41,7 +41,7 @@ export function Footer() {
               Yusuf Jaelani
             </h3>
             <p className="text-gray-600 dark:text-[#66768f] text-sm">
-              Full Stack Developer & Web Developer.
+              Full Stack Web Developer & Android Developer.
             </p>
           </div>
 
