@@ -6,6 +6,7 @@ import { Inter, DynaPuff } from "next/font/google";
 import CursorEffect from "@/components/ui/CursorEffect";
 import { Toaster } from 'sonner';
 import { Footer } from "@/components/global/Footer";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${dynaPuff.variable}`}>
       <body className="antialiased bg-sa-light-bg text-sa-light-accent dark:bg-sa-dark-bg dark:text-sa-dark-text-main">
+        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
      {children}
