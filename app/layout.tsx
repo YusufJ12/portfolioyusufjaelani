@@ -7,6 +7,7 @@ import CursorEffect from "@/components/ui/CursorEffect";
 import { Toaster } from 'sonner';
 import { Footer } from "@/components/global/Footer";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${dynaPuff.variable}`}>
       <body className="antialiased bg-sa-light-bg text-sa-light-accent dark:bg-sa-dark-bg dark:text-sa-dark-text-main">
         <Analytics />
+        <SpeedInsights />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
      {children}
