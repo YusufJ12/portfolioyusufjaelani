@@ -55,10 +55,20 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
+    // Exclude id to let the database auto-generate it
+    const { id, ...projectData } = body;
+    
     const project = await db.project.create({
       data: {
-        ...body,
-        tags: JSON.stringify(body.tags || []),
+        title: projectData.title || "",
+        description: projectData.description || "",
+        imageUrl: projectData.imageUrl || null,
+        category: projectData.category || "Web",
+        tags: JSON.stringify(projectData.tags || []),
+        liveUrl: projectData.liveUrl || null,
+        githubUrl: projectData.githubUrl || null,
+        featured: projectData.featured || false,
+        order: projectData.order || 0,
       },
     });
 

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { supabaseAdmin } from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
@@ -15,22 +14,32 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(bytes);
 
     // Create unique filename
-    const ext = path.extname(file.name);
-    const filename = `${crypto.randomUUID()}${ext}`;
-    
-    // Relative path for database
-    const relativePath = `/uploads/projects/${filename}`;
-    
-    // Absolute path for saving file
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "projects");
-    
-    // Ensure directory exists
-    await mkdir(uploadDir, { recursive: true });
-    
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
+    const ext = file.name.split('.').pop();
+    const filename = `${crypto.randomUUID()}.${ext}`;
+    const filePath = `projects/${filename}`;
 
-    return NextResponse.json({ url: relativePath });
+    // Upload to Supabase Storage
+    const { error } = await supabaseAdmin.storage
+      .from('uploads')
+      .upload(filePath, buffer, {
+        contentType: file.type,
+        upsert: false
+      });
+
+    if (error) {
+      console.error("Supabase upload error:", error);
+      return NextResponse.json(
+        { error: "Failed to upload to storage" },
+        { status: 500 }
+      );
+    }
+
+    // Get public URL
+    const { data: urlData } = supabaseAdmin.storage
+      .from('uploads')
+      .getPublicUrl(filePath);
+
+    return NextResponse.json({ url: urlData.publicUrl });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
