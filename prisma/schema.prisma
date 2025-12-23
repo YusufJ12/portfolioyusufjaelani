@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Profile {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  title                 String   // e.g., "Full Stack Web Developer"
+  description           String   // Bio/intro text
+  email                 String
+  phone                 String?
+  location              String?
+  resumeUrl             String?  // URL to resume PDF
+  avatarUrl             String?  // URL to profile image
+  availableForFreelance Boolean  @default(true)
+  heroTagline           String?  // e.g., "Tersedia untuk pekerjaan lepas"
+  updatedAt             DateTime @updatedAt
+}
+
+model SocialLink {
+  id       Int    @id @default(autoincrement())
+  platform String // e.g., "GitHub", "LinkedIn", "Email"
+  url      String
+  icon     String // Icon name from lucide-react
+  order    Int    @default(0)
+}
+
+model Skill {
+  id           Int    @id @default(autoincrement())
+  category     String // e.g., "Frontend Development"
+  name         String // Same as category for display
+  description  String
+  icon         String // Icon name from lucide-react
+  technologies String // JSON array as string: ["React", "Next.js", ...]
+  order        Int    @default(0)
+}
+
+model Experience {
+  id           Int    @id @default(autoincrement())
+  title        String // Job title
+  company      String
+  description  String
+  startDate    String // e.g., "2023"
+  endDate      String? // e.g., "Sekarang" or null for current
+  achievements String // JSON array as string
+  websiteLinks String // JSON array of {name, url} objects
+  order        Int    @default(0)
+}
+
+model Education {
+  id             Int     @id @default(autoincrement())
+  type           String  // "education" or "certification"
+  title          String
+  institution    String
+  year           String
+  certificateUrl String?
+  order          Int     @default(0)
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String?  // URL to project image
+  tags        String   // JSON array as string: ["Laravel", "PHP", ...]
+  category    String   // "Web", "Mobile", "UI/UX", "Other"
+  liveUrl     String?
+  githubUrl   String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,43 @@
+{
+  "testTime": "2025-12-23T08:12:03.738Z",
+  "status": "success",
+  "experiencesCount": 1,
+  "firstExperience": {
+    "id": 1,
+    "title": "Programmer",
+    "company": "PT. Muliaoffset Packindo",
+    "description": "Membuat Aplikasi untuk kebutuhan Perusahaan.",
+    "startDate": "2023",
+    "endDate": "Sekarang",
+    "achievements": "[\"Membuat Sistem ERP dengan Framework Laravel 10\",\"Membuat Sistem ERP Mobile untuk Sales dengan Kotlin\",\"Membuat Aplikasi IT Helpdesk dengan Codeigniter 4\",\"Membuat CMS Website Perusahaan dengan Laravel 10\",\"Data Engineering\",\"Server Administrator\",\"IT Support\"]",
+    "websiteLinks": "[{\"name\":\"Muliaoffset\",\"url\":\"https://muliaoffset.com\"},{\"name\":\"Muliagift\",\"url\":\"https://muliagift.com\"}]",
+    "order": 1
+  },
+  "firstExperienceAchievementsType": "string",
+  "skillsCount": 6,
+  "firstSkill": {
+    "id": 1,
+    "category": "Frontend Development",
+    "name": "Frontend Development",
+    "description": "Building responsive, accessible, and performant user interfaces",
+    "icon": "Layout",
+    "technologies": "[\"React\",\"Next.js\",\"TypeScript\",\"TailwindCSS\",\"Vue.js\",\"Redux\",\"Material UI\",\"Styled Components\"]",
+    "order": 1
+  },
+  "firstSkillTechnologiesType": "string",
+  "projectsCount": 13,
+  "firstProject": {
+    "id": 1,
+    "title": "Healty Slim 30",
+    "description": "Website Diet yang saya buat menggunakan Laravel 10 dan Bootstrap dengan Payment Gateway dari Midtrans.",
+    "imageUrl": "/projects/p1.jpg",
+    "tags": "[\"Laravel\",\"PHP\",\"MySql\",\"Bootstrap\"]",
+    "category": "Web",
+    "liveUrl": "https://healthyslimindonesia.com/",
+    "githubUrl": "",
+    "featured": false,
+    "order": 1,
+    "createdAt": "2025-12-23T04:35:39.289Z"
+  },
+  "firstProjectTagsType": "string"
+}

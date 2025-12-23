@@ -1,19 +1,59 @@
-import React from "react";
-import { ArrowRight, Github, ExternalLink } from "lucide-react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { ArrowRight, Github, ExternalLink, Loader2 } from "lucide-react";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
-import { projects } from "@/data/projects";
 
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  tags: string[];
+  category: string;
+  liveUrl: string | null;
+  githubUrl: string | null;
+};
 
 export function LatestProjects() {
-  const latestProjects = projects.slice(0, 2);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/projects?limit=2');
+        if (res.ok) {
+          const data = await res.json();
+          setProjects(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="py-12">
+        <h2 className="font-dynapuff text-3xl font-bold text-[#101010] dark:text-[#94A9C9] mb-12">
+          Latest Projects
+        </h2>
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-[#ffe400]" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-12">
       <div className="flex justify-between items-center mb-12">
-        <h2
-          className={`font-dynapuff text-3xl font-bold text-[#101010] dark:text-[#94A9C9]`}
-        >
+        <h2 className="font-dynapuff text-3xl font-bold text-[#101010] dark:text-[#94A9C9]">
           Latest Projects
         </h2>
         <MagneticLink
@@ -26,9 +66,9 @@ export function LatestProjects() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {latestProjects.map((project, index) => (
+        {projects.map((project, index) => (
           <div
-            key={index}
+            key={project.id}
             className="group relative animate-slideInUp bg-white dark:bg-[#131C31] 
               rounded-xl overflow-hidden border border-gray-100 dark:border-[#222F43] 
               hover:border-[#ffe400] dark:hover:border-[#ffe400] transition-all duration-300"
@@ -36,7 +76,7 @@ export function LatestProjects() {
           >
             <div className="relative h-48 overflow-hidden">
               <Image
-                src={project.image}
+                src={project.imageUrl || '/projects/p1.jpg'}
                 alt={project.title}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -64,20 +104,24 @@ export function LatestProjects() {
               </div>
 
               <div className="flex gap-4">
-                <MagneticLink
-                  href={project.githubUrl}
-                  className="p-2 rounded-lg hover:bg-[#ffe400] hover:bg-opacity-10 
-                    text-[#101010] dark:text-[#94A9C9] transition-all duration-300"
-                >
-                  <Github className="w-5 h-5" />
-                </MagneticLink>
-                <MagneticLink
-                  href={project.liveUrl}
-                  className="p-2 rounded-lg hover:bg-[#ffe400] hover:bg-opacity-10 
-                    text-[#101010] dark:text-[#94A9C9] transition-all duration-300"
-                >
-                  <ExternalLink className="w-5 h-5" />
-                </MagneticLink>
+                {project.githubUrl && (
+                  <MagneticLink
+                    href={project.githubUrl}
+                    className="p-2 rounded-lg hover:bg-[#ffe400] hover:bg-opacity-10 
+                      text-[#101010] dark:text-[#94A9C9] transition-all duration-300"
+                  >
+                    <Github className="w-5 h-5" />
+                  </MagneticLink>
+                )}
+                {project.liveUrl && (
+                  <MagneticLink
+                    href={project.liveUrl}
+                    className="p-2 rounded-lg hover:bg-[#ffe400] hover:bg-opacity-10 
+                      text-[#101010] dark:text-[#94A9C9] transition-all duration-300"
+                  >
+                    <ExternalLink className="w-5 h-5" />
+                  </MagneticLink>
+                )}
               </div>
             </div>
           </div>

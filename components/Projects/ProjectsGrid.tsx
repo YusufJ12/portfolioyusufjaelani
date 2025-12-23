@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Github, ExternalLink } from "lucide-react";
+import { Github, ExternalLink, Loader2 } from "lucide-react";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 import { useProjectsFilter } from "@/hooks/useProjectsFilter";
@@ -12,8 +12,17 @@ export function ProjectsGrid() {
     filteredProjects,
     currentPage,
     totalPages,
-    handlePageChange
+    handlePageChange,
+    loading
   } = useProjectsFilter();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-[#ffe400]" />
+      </div>
+    );
+  }
 
   if (filteredProjects.length === 0) {
     return (
@@ -30,7 +39,7 @@ export function ProjectsGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project, index) => (
           <div
-            key={index}
+            key={project.id || index}
             className="group relative bg-white dark:bg-[#131C31] rounded-xl overflow-hidden
               border border-gray-100 dark:border-[#222F43] hover:border-[#ffe400] 
               dark:hover:border-[#ffe400] transition-all duration-300 animate-slideInUp
@@ -39,7 +48,7 @@ export function ProjectsGrid() {
           >
             <div className="relative aspect-[16/10] overflow-hidden">
               <Image
-                src={project.image}
+                src={project.image || project.imageUrl || '/projects/p1.jpg'}
                 alt={project.title}
                 width={400}
                 height={250}
@@ -48,18 +57,22 @@ export function ProjectsGrid() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 
                 transition-opacity duration-300 flex items-end justify-start p-4">
                 <div className="flex gap-2">
-                  <MagneticLink
-                    href={project.liveUrl}
-                    className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
-                  >
-                    <ExternalLink className="w-4 h-4 text-[#101010]" />
-                  </MagneticLink>
-                  <MagneticLink
-                    href={project.githubUrl}
-                    className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
-                  >
-                    <Github className="w-4 h-4 text-[#101010]" />
-                  </MagneticLink>
+                  {project.liveUrl && (
+                    <MagneticLink
+                      href={project.liveUrl}
+                      className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
+                    >
+                      <ExternalLink className="w-4 h-4 text-[#101010]" />
+                    </MagneticLink>
+                  )}
+                  {project.githubUrl && (
+                    <MagneticLink
+                      href={project.githubUrl}
+                      className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
+                    >
+                      <Github className="w-4 h-4 text-[#101010]" />
+                    </MagneticLink>
+                  )}
                 </div>
               </div>
             </div>
@@ -99,4 +112,4 @@ export function ProjectsGrid() {
       />
     </>
   );
-} 
+}

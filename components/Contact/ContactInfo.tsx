@@ -1,31 +1,74 @@
-import React from "react";
-import { Mail, MapPin, Phone, /*Clock*/ MessageCircle } from "lucide-react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Mail, MapPin, Phone, MessageCircle, Loader2 } from "lucide-react";
 import MagneticLink from "../ui/MagneticLink";
 
+interface Profile {
+  email: string;
+  phone: string | null;
+  location: string | null;
+}
+
 export function ContactInfo() {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const res = await fetch("/api/profile");
+        if (res.ok) {
+          const data = await res.json();
+          setProfile(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-[#ffe400]" />
+      </div>
+    );
+  }
+
+  const email = profile?.email || "yusufjaelani@gmail.com";
+  const phone = profile?.phone || "+6282243993431";
+  const location = profile?.location || "Semarang City, Indonesia";
+  
+  // Clean phone number for WhatsApp link
+  const waPhone = phone.replace(/\D/g, "");
+
   const contactDetails = [
     {
-      icon: <Mail className="w-5 h-5" />,
+      Icon: Mail,
       title: "Email",
-      value: "yusufjaelani@gmail.com",
-      href: "mailto:yusufjaelani@gmail.com"
+      value: email,
+      href: `mailto:${email}`
     },
     {
-      icon: <MapPin className="w-5 h-5" />,
+      Icon: MapPin,
       title: "Location",
-      value: "Semarang City, Indonesia"
+      value: location
     },
     {
-      icon: <Phone className="w-5 h-5" />,
+      Icon: Phone,
       title: "Phone",
-      value: "+6282243993431",
-      href: "tel:+6282243993431"
+      value: phone,
+      href: `tel:${phone}`
     },
     {
-      icon: <MessageCircle className="w-5 h-5" />,
+      Icon: MessageCircle,
       title: "WhatsApp",
-      value: "+6282243993431",
-      href: "https://wa.me/6282243993431"
+      value: phone,
+      href: `https://wa.me/${waPhone}`
     }
   ];
 
@@ -49,9 +92,7 @@ export function ContactInfo() {
             <div className="flex items-center gap-4">
               <div className="p-2 bg-[#ffe400] bg-opacity-10 rounded-lg 
                 group-hover:bg-opacity-20 transition-all duration-300">
-                {React.cloneElement(detail.icon, { 
-                  className: "w-5 h-5 text-[#ffe400]" 
-                })}
+                <detail.Icon className="w-5 h-5 text-[#ffe400]" />
               </div>
               <div>
                 <h4 className="text-sm font-medium text-gray-500 dark:text-[#66768f]">
@@ -77,4 +118,4 @@ export function ContactInfo() {
       </div>
     </div>
   );
-} 
+}

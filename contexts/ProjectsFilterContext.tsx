@@ -1,10 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React, { createContext, useState, useMemo } from 'react';
-import { projects } from '@/data/projects';
+import React, { createContext, useState, useMemo, useEffect } from 'react';
 
 const ITEMS_PER_PAGE = 9;
+
+type Project = {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  tags: string[];
+  category: string;
+  liveUrl: string | null;
+  githubUrl: string | null;
+  featured: boolean;
+  order: number;
+};
 
 type ProjectsFilterContextType = {
   activeFilter: string;
@@ -17,16 +29,42 @@ type ProjectsFilterContextType = {
   filters: string[];
   filteredProjects: any[];
   totalProjects: number;
+  loading: boolean;
 };
 
 export const ProjectsFilterContext = createContext<ProjectsFilterContextType | null>(null);
 
 export function ProjectsFilterProvider({ children }: { children: React.ReactNode }) {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   const filters = ["All", "Web", "Mobile", "UI/UX", "Other"];
+  
+  // Fetch projects from API
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch('/api/projects');
+        if (res.ok) {
+          const data = await res.json();
+          // Transform data to match expected format
+          const transformed = data.map((p: Project) => ({
+            ...p,
+            image: p.imageUrl || '/projects/p1.jpg', // Fallback image
+          }));
+          setProjects(transformed);
+        }
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
   
   const filteredProjects = useMemo(() => {
     return projects
@@ -39,7 +77,7 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
         
         return matchesFilter && matchesSearch && !project.featured;
       });
-  }, [activeFilter, searchQuery]);
+  }, [projects, activeFilter, searchQuery]);
 
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   
@@ -70,7 +108,8 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
     handlePageChange,
     filters,
     filteredProjects: paginatedProjects,
-    totalProjects: filteredProjects.length
+    totalProjects: filteredProjects.length,
+    loading
   };
 
   return (
@@ -78,4 +117,4 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
       {children}
     </ProjectsFilterContext.Provider>
   );
-} 
+}
