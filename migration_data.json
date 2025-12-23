@@ -1,0 +1,319 @@
+{
+  "admin": [
+    {
+      "id": 1,
+      "email": "admin@yusufjaelani.com",
+      "passwordHash": "$2b$10$Aa6pLaCTwzw.z0CaqnLIQeupnFU6n/RfyD1Q8qPV5R5.GQE/Rtn02",
+      "createdAt": "2025-12-23T04:35:39.183Z"
+    }
+  ],
+  "profile": [
+    {
+      "id": 1,
+      "name": "Yusuf Jaelani",
+      "title": "Full Stack Web Developer",
+      "description": "Full Stack Web Developer yang berfokus pada pembuatan aplikasi web berkualitas tinggi. Saya membantu bisnis dan individu mengubah ide mereka menjadi produk digital yang sukses melalui kode yang bersih dan solusi yang matang.",
+      "email": "yusufjaelani@gmail.com",
+      "phone": "+6282243993431",
+      "location": "Semarang City, Indonesia",
+      "resumeUrl": "/uploads/resumes/resume_1766479410872.pdf",
+      "avatarUrl": null,
+      "availableForFreelance": true,
+      "heroTagline": " Tersedia untuk pekerjaan lepas (freelance)",
+      "updatedAt": "2025-12-23T04:35:39.192Z"
+    }
+  ],
+  "socialLink": [
+    {
+      "id": 1,
+      "platform": "GitHub",
+      "url": "https://github.com/YusufJ12",
+      "icon": "Github",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/yusuf-jaelani-0311b6191/",
+      "icon": "Linkedin",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "platform": "Email",
+      "url": "mailto:yusufjaelani@gmail.com",
+      "icon": "Mail",
+      "order": 3
+    }
+  ],
+  "skill": [
+    {
+      "id": 1,
+      "category": "Frontend Development",
+      "name": "Frontend Development",
+      "description": "Building responsive, accessible, and performant user interfaces",
+      "icon": "Layout",
+      "technologies": "[\"React\",\"Next.js\",\"TypeScript\",\"TailwindCSS\",\"Vue.js\",\"Redux\",\"Material UI\",\"Styled Components\"]",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "category": "Backend Development",
+      "name": "Backend Development",
+      "description": "Designing scalable APIs and efficient database architectures",
+      "icon": "Server",
+      "technologies": "[\"Node.js\",\"Express\",\"PostgreSQL\",\"MySQL\"]",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "category": "Web Technologies",
+      "name": "Web Technologies",
+      "description": "Mastering core web technologies and modern standards",
+      "icon": "Globe",
+      "technologies": "[\"HTML5\",\"CSS3\",\"JavaScript\",\"REST APIs\",\"Progressive Web Apps\",\"SEO\",\"Web Security\"]",
+      "order": 3
+    },
+    {
+      "id": 4,
+      "category": "Development Tools",
+      "name": "Development Tools",
+      "description": "Utilizing industry-standard tools for efficient development",
+      "icon": "Code2",
+      "technologies": "[\"Git\"]",
+      "order": 4
+    },
+    {
+      "id": 5,
+      "category": "UI/UX Design",
+      "name": "UI/UX Design",
+      "description": "Creating intuitive and engaging user experiences",
+      "icon": "Sparkles",
+      "technologies": "[\"Responsive Design\"]",
+      "order": 5
+    },
+    {
+      "id": 6,
+      "category": "Cross-Platform",
+      "name": "Cross-Platform",
+      "description": "Developing applications that work seamlessly across devices",
+      "icon": "Laptop",
+      "technologies": "[\"React Native\",\"Flutter\",\"Kotlin\"]",
+      "order": 6
+    }
+  ],
+  "experience": [
+    {
+      "id": 1,
+      "title": "Programmer",
+      "company": "PT. Muliaoffset Packindo",
+      "description": "Membuat Aplikasi untuk kebutuhan Perusahaan.",
+      "startDate": "2023",
+      "endDate": "Sekarang",
+      "achievements": "[\"Membuat Sistem ERP dengan Framework Laravel 10\",\"Membuat Sistem ERP Mobile untuk Sales dengan Kotlin\",\"Membuat Aplikasi IT Helpdesk dengan Codeigniter 4\",\"Membuat CMS Website Perusahaan dengan Laravel 10\",\"Data Engineering\",\"Server Administrator\",\"IT Support\"]",
+      "websiteLinks": "[{\"name\":\"Muliaoffset\",\"url\":\"https://muliaoffset.com\"},{\"name\":\"Muliagift\",\"url\":\"https://muliagift.com\"}]",
+      "order": 1
+    }
+  ],
+  "education": [
+    {
+      "id": 1,
+      "type": "certification",
+      "title": "JavaScript Algorithms and Data Structures",
+      "institution": "freeCodeCamp",
+      "year": "2022",
+      "certificateUrl": "https://www.freecodecamp.org/certification/fcc22eb7fe7-aa12-4c66-9b97-0e7922f99924/javascript-algorithms-and-data-structures",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "type": "certification",
+      "title": "Responsive Web Design",
+      "institution": "freeCodeCamp",
+      "year": "2022",
+      "certificateUrl": "https://www.freecodecamp.org/certification/fcc22eb7fe7-aa12-4c66-9b97-0e7922f99924/responsive-web-design",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "type": "education",
+      "title": "Manajemen Informatika",
+      "institution": "Universitas Sains & Teknologi Komputer (STEKOM)",
+      "year": "2016 - 2022",
+      "certificateUrl": null,
+      "order": 3
+    }
+  ],
+  "project": [
+    {
+      "id": 1,
+      "title": "Healty Slim 30",
+      "description": "Website Diet yang saya buat menggunakan Laravel 10 dan Bootstrap dengan Payment Gateway dari Midtrans.",
+      "imageUrl": "/projects/p1.jpg",
+      "tags": "[\"Laravel\",\"PHP\",\"MySql\",\"Bootstrap\"]",
+      "category": "Web",
+      "liveUrl": "https://healthyslimindonesia.com/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 1,
+      "createdAt": "2025-12-23T04:35:39.289Z"
+    },
+    {
+      "id": 2,
+      "title": "ERP Muliaoffset",
+      "description": "ERP System",
+      "imageUrl": "/projects/p2.jpg",
+      "tags": "[\"Laravel\",\"PHP\",\"MySql\",\"Bootstrap\"]",
+      "category": "Web",
+      "liveUrl": "",
+      "githubUrl": "",
+      "featured": false,
+      "order": 2,
+      "createdAt": "2025-12-23T04:35:39.296Z"
+    },
+    {
+      "id": 3,
+      "title": "ERP Muliaoffset Mobile",
+      "description": "ERP System",
+      "imageUrl": "/projects/p3.jpg",
+      "tags": "[\"Kotlin\",\"Java\",\"Android Studio\"]",
+      "category": "Mobile",
+      "liveUrl": "",
+      "githubUrl": "",
+      "featured": false,
+      "order": 3,
+      "createdAt": "2025-12-23T04:35:39.303Z"
+    },
+    {
+      "id": 4,
+      "title": "Company Profile Muliaoffset",
+      "description": "Company Profiles for Domestic Market",
+      "imageUrl": "/projects/p4.jpg",
+      "tags": "[\"Laravel\",\"PHP\",\"MySql\",\"Bootstrap\"]",
+      "category": "Web",
+      "liveUrl": "https://muliaoffset.com/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 4,
+      "createdAt": "2025-12-23T04:35:39.311Z"
+    },
+    {
+      "id": 5,
+      "title": "Company Profile Muliagiftbox",
+      "description": "Company Profiles for International Market",
+      "imageUrl": "/projects/p5.jpg",
+      "tags": "[\"Laravel\",\"PHP\",\"MySql\",\"Bootstrap\"]",
+      "category": "Web",
+      "liveUrl": "https://muliagiftbox.com",
+      "githubUrl": "",
+      "featured": false,
+      "order": 5,
+      "createdAt": "2025-12-23T04:35:39.318Z"
+    },
+    {
+      "id": 6,
+      "title": "Skripsi Relief",
+      "description": "Sebuah aplikasi informasi dengan Qr Scanner untuk mengetahui Relief tersebut bercerita tentang apa.",
+      "imageUrl": "/projects/p6.jpg",
+      "tags": "[\"Android\",\"Kotlin\",\"Android Studio\"]",
+      "category": "Mobile",
+      "liveUrl": "https://skrispirelief.my.id",
+      "githubUrl": "",
+      "featured": false,
+      "order": 6,
+      "createdAt": "2025-12-23T04:35:39.324Z"
+    },
+    {
+      "id": 7,
+      "title": "Learning Content Management System",
+      "description": "Aplikasi untuk membuat konten pembelajaran dengan CBT dan realtime chat antara Pengajar dan Siswa.",
+      "imageUrl": "/projects/p7.jpg",
+      "tags": "[\"CodeIgniter\",\"Bootstrap\",\"MySql\",\"PHP\"]",
+      "category": "Web",
+      "liveUrl": "http://sdn1kliris.epizy.com/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 7,
+      "createdAt": "2025-12-23T04:35:39.333Z"
+    },
+    {
+      "id": 8,
+      "title": "HRMS (Human Resource Management System)",
+      "description": "Aplikasi untuk mengelola data karyawan, absensi, payroll, dan lain-lain.",
+      "imageUrl": "/projects/p8.jpg",
+      "tags": "[\"CodeIgniter\",\"PHP\",\"Bootstrap\",\"MySql\"]",
+      "category": "Web",
+      "liveUrl": "",
+      "githubUrl": "",
+      "featured": false,
+      "order": 8,
+      "createdAt": "2025-12-23T04:35:39.340Z"
+    },
+    {
+      "id": 9,
+      "title": "Portfolio",
+      "description": "Modern portfolio website dengan Dark Mode dan Animasi.",
+      "imageUrl": "/projects/p9.jpg",
+      "tags": "[\"Next.js\",\"TailwindCSS\",\"Prisma\"]",
+      "category": "Web",
+      "liveUrl": "",
+      "githubUrl": "",
+      "featured": false,
+      "order": 9,
+      "createdAt": "2025-12-23T04:35:39.346Z"
+    },
+    {
+      "id": 10,
+      "title": "Klinik Sandjojo",
+      "description": "Website Klinik Sandjojo",
+      "imageUrl": "/projects/p10.jpg",
+      "tags": "[\"Laravel\",\"Bootstrap\",\"MySql\",\"PHP\"]",
+      "category": "Web",
+      "liveUrl": "https://kliniksandjojosehat.com/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 10,
+      "createdAt": "2025-12-23T04:35:39.352Z"
+    },
+    {
+      "id": 11,
+      "title": "Sistem Pakar Penyakit Ayam",
+      "description": "Sistem Pakar Penyakit Ayam",
+      "imageUrl": "/projects/p11.jpg",
+      "tags": "[\"CodeIgniter\",\"Bootstrap\",\"MySql\",\"PHP\"]",
+      "category": "Web",
+      "liveUrl": "http://sistempakarpenyakitayam.epizy.com/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 11,
+      "createdAt": "2025-12-23T04:35:39.358Z"
+    },
+    {
+      "id": 12,
+      "title": "IT Helpdesk",
+      "description": "IT Helpdesk System",
+      "imageUrl": "/projects/p12.jpg",
+      "tags": "[\"CodeIgniter\",\"Bootstrap\",\"PHP\",\"MySql\"]",
+      "category": "Web",
+      "liveUrl": "",
+      "githubUrl": "",
+      "featured": false,
+      "order": 12,
+      "createdAt": "2025-12-23T04:35:39.364Z"
+    },
+    {
+      "id": 13,
+      "title": "Portfolio v1",
+      "description": "Portfolio Website v1",
+      "imageUrl": "/projects/p13.jpg",
+      "tags": "[\"React\"]",
+      "category": "Web",
+      "liveUrl": "https://yusufjaelaniportfolio.web.app/",
+      "githubUrl": "",
+      "featured": false,
+      "order": 13,
+      "createdAt": "2025-12-23T04:35:39.370Z"
+    }
+  ],
+  "contactMessage": []
+}
