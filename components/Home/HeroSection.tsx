@@ -34,7 +34,7 @@ const iconMap: Record<string, React.ElementType> = {
 export function HeroSection() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {

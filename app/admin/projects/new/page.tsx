@@ -67,7 +67,7 @@ export default function NewProjectPage() {
           text: error.error || "Failed to create project",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",
@@ -109,7 +109,7 @@ export default function NewProjectPage() {
           title: "Upload failed",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",

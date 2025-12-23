@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { Skill } from "@prisma/client";
 
 // GET /api/skills - Get all skills
 export async function GET() {
@@ -9,7 +10,7 @@ export async function GET() {
     });
 
     // Parse technologies JSON string for each skill
-    const parsedSkills = skills.map((skill: any) => {
+    const parsedSkills = skills.map((skill: Skill) => {
       let technologies = [];
       try {
         technologies = skill.technologies ? JSON.parse(skill.technologies) : [];

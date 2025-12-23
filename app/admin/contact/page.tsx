@@ -38,7 +38,6 @@ export default function AdminContactPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -98,7 +97,7 @@ export default function AdminContactPage() {
           title: "Gagal menyimpan",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",
@@ -134,7 +133,7 @@ export default function AdminContactPage() {
           showConfirmButton: false,
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",

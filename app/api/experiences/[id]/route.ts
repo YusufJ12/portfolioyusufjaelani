@@ -4,11 +4,12 @@ import { db } from "@/lib/db";
 // GET /api/experiences/[id] - Get single experience
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const experience = await db.experience.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
 
     if (!experience) {
@@ -33,7 +34,7 @@ export async function GET(
       achievements,
       websiteLinks,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch experience" }, { status: 500 });
   }
 }
@@ -41,14 +42,15 @@ export async function GET(
 // PUT /api/experiences/[id] - Update experience
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { title, company, description, startDate, endDate, achievements, websiteLinks, order } = body;
 
     const experience = await db.experience.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         title: title || "",
         company: company || "",
@@ -71,14 +73,15 @@ export async function PUT(
 // DELETE /api/experiences/[id] - Delete experience
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await db.experience.delete({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
     return NextResponse.json({ message: "Experience deleted" });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to delete experience" }, { status: 500 });
   }
 }

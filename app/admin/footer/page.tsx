@@ -34,7 +34,6 @@ export default function AdminFooterPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
   
   // Modal state
   const [showModal, setShowModal] = useState(false);
@@ -82,7 +81,7 @@ export default function AdminFooterPage() {
           showConfirmButton: false,
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",
@@ -145,7 +144,7 @@ export default function AdminFooterPage() {
         timer: 1500,
         showConfirmButton: false,
       });
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",

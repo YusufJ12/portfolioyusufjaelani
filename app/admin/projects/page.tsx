@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Plus, Pencil, Trash2, ExternalLink, Search } from "lucide-react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -117,13 +118,13 @@ export default function AdminProjectsPage() {
             Manage your portfolio projects
           </p>
         </div>
-        <a
+        <Link
           href="/admin/projects/new"
           className="flex items-center gap-2 px-4 py-2 bg-[#ffe400] text-[#101010] font-medium rounded-lg hover:bg-[#e6cd00] transition-colors"
         >
           <Plus size={20} />
           Add Project
-        </a>
+        </Link>
       </div>
 
       {/* Filters */}

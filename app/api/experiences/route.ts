@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { Experience } from "@prisma/client";
 
 // GET /api/experiences - Get all experiences
 export async function GET() {
@@ -9,7 +10,7 @@ export async function GET() {
     });
 
     // Parse JSON strings for each experience
-    const parsedExperiences = experiences.map((exp: any) => {
+    const parsedExperiences = experiences.map((exp: Experience) => {
       let achievements = [];
       let websiteLinks = [];
       try {

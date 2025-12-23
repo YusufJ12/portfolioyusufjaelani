@@ -64,7 +64,7 @@ export default function EditProjectPage() {
           });
           router.push("/admin/projects");
         }
-      } catch (error) {
+      } catch {
         MySwal.fire({
           ...swalConfig,
           icon: "error",
@@ -107,7 +107,7 @@ export default function EditProjectPage() {
           text: error.error || "Failed to update project",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",
@@ -149,7 +149,7 @@ export default function EditProjectPage() {
           title: "Upload failed",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",

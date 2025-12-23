@@ -60,7 +60,6 @@ export function AboutIntro() {
     );
   }
 
-  const name = profile?.name || "Yusuf Jaelani";
   const description = profile?.description || "Halo! Saya Yusuf Jaelani, seorang Full Stack Web Developer Android Developer yang berdomisili di Semarang. Saya suka membangun aplikasi web dan mobile yang indah, responsif, dan ramah pengguna, sambil terus meningkatkan skill dan belajar teknologi terbaru.";
 
   return (

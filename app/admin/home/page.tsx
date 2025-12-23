@@ -43,7 +43,6 @@ export default function AdminHomePage() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
   const [mounted, setMounted] = useState(false);
 
   // Skill Form State
@@ -224,7 +223,7 @@ export default function AdminHomePage() {
           title: "Gagal menyimpan",
         });
       }
-    } catch (error) {
+    } catch {
       MySwal.fire({
         ...swalConfig,
         icon: "error",

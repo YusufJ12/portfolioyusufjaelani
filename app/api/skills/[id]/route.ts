@@ -4,11 +4,12 @@ import { db } from "@/lib/db";
 // GET /api/skills/[id] - Get single skill
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const skill = await db.skill.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
 
     if (!skill) {
@@ -26,7 +27,7 @@ export async function GET(
       ...skill,
       technologies,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch skill" }, { status: 500 });
   }
 }
@@ -34,14 +35,15 @@ export async function GET(
 // PUT /api/skills/[id] - Update skill
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { category, name, description, icon, technologies, order } = body;
 
     const skill = await db.skill.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         category: category || "",
         name: name || category || "",
@@ -62,14 +64,15 @@ export async function PUT(
 // DELETE /api/skills/[id] - Delete skill
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await db.skill.delete({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     });
     return NextResponse.json({ message: "Skill deleted" });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to delete skill" }, { status: 500 });
   }
 }

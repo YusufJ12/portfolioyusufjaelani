@@ -39,6 +39,7 @@ interface Experience {
   endDate: string | null;
   achievements: string;
   websiteLinks: string;
+  order: number;
 }
 
 interface Education {
@@ -48,6 +49,7 @@ interface Education {
   institution: string;
   year: string;
   certificateUrl: string | null;
+  order: number;
 }
 
 export default function AdminAboutPage() {
@@ -125,7 +127,7 @@ export default function AdminAboutPage() {
       endDate: exp.endDate || "",
       achievements: Array.isArray(exp.achievements) ? exp.achievements : [],
       websiteLinks: Array.isArray(exp.websiteLinks) ? exp.websiteLinks : [],
-      order: (exp as any).order || 0,
+      order: exp.order || 0,
     });
     setShowExpForm(true);
   };
@@ -217,7 +219,7 @@ export default function AdminAboutPage() {
       institution: edu.institution,
       year: edu.year,
       certificateUrl: edu.certificateUrl || "",
-      order: (edu as any).order || 0,
+      order: edu.order || 0,
     });
     setShowEduForm(true);
   };
@@ -467,7 +469,7 @@ export default function AdminAboutPage() {
                               title: "Upload failed",
                             });
                           }
-                        } catch (err) {
+                        } catch {
                           MySwal.fire({
                             ...swalConfig,
                             icon: "error",

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { Project } from "@prisma/client";
 
 // GET /api/projects - Get all projects
 export async function GET(request: Request) {
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
     });
 
     // Parse tags JSON string for each project
-    const parsedProjects = projects.map((project: any) => {
+    const parsedProjects = projects.map((project: Project) => {
       let tags = [];
       try {
         tags = JSON.parse(project.tags);
