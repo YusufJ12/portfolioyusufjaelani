@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
@@ -18,8 +18,11 @@ export async function POST(request: Request) {
     const filename = `${crypto.randomUUID()}.${ext}`;
     const filePath = `projects/${filename}`;
 
+    // Get Supabase client (lazy initialization)
+    const supabase = getSupabaseAdmin();
+
     // Upload to Supabase Storage
-    const { error } = await supabaseAdmin.storage
+    const { error } = await supabase.storage
       .from('uploads')
       .upload(filePath, buffer, {
         contentType: file.type,
@@ -35,7 +38,7 @@ export async function POST(request: Request) {
     }
 
     // Get public URL
-    const { data: urlData } = supabaseAdmin.storage
+    const { data: urlData } = supabase.storage
       .from('uploads')
       .getPublicUrl(filePath);
 
