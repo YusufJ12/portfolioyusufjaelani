@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Download, ArrowRight } from "lucide-react";
-import Swal from "sweetalert2";
 import MagneticLink from "@/components/ui/MagneticLink";
 
 export function AboutIntro() {
@@ -13,22 +12,13 @@ export function AboutIntro() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
-      // Tampilkan SweetAlert2 untuk konfirmasi di perangkat mobile
-      Swal.fire({
-        title: "Apakah Anda ingin mengunduh resume Yusuf Jaelani?",
-        text: "File akan diunduh ke perangkat Anda.",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Ya, Unduh",
-        cancelButtonText: "Batal",
-        confirmButtonColor: "#ffe400",
-        cancelButtonColor: "#d33",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Jika pengguna mengklik "Ya", lanjutkan proses download
-          window.location.href = "/resume.pdf";
-        }
-      });
+      // Tampilkan konfirmasi untuk perangkat mobile
+      const confirmed = window.confirm(
+        "Apakah Anda ingin mengunduh resume Yusuf Jaelani?"
+      );
+      if (confirmed) {
+        window.location.href = "/resume.pdf";
+      }
     } else {
       // Jika bukan mobile, langsung unduh resume
       window.location.href = "/resume.pdf";
@@ -53,7 +43,7 @@ export function AboutIntro() {
           Hubungi Saya <ArrowRight className="w-4 h-4" />
         </MagneticLink>
 
-        {/* Tombol Resume dengan SweetAlert2 */}
+        {/* Tombol Resume */}
         <button
           onClick={handleDownload}
           className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#ffe400] 
@@ -65,3 +55,4 @@ export function AboutIntro() {
     </div>
   );
 }
+
