@@ -325,11 +325,11 @@ async function main() {
       order: 13,
     },
   ];
+  // Clear existing projects and create new ones (UUID doesn't support upsert by order)
+  await prisma.project.deleteMany({});
   for (const project of projects) {
-    await prisma.project.upsert({
-      where: { id: project.order },
-      update: project,
-      create: project,
+    await prisma.project.create({
+      data: project,
     });
   }
   console.log("✅ Projects created");
