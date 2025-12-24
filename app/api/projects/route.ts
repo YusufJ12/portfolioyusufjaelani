@@ -76,7 +76,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error creating project:", error);
     return NextResponse.json(
-      { error: "Failed to create project" },
+      { error: "Failed to create project", details: String(error) },
       { status: 500 }
     );
   }
