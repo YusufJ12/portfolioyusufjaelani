@@ -99,3 +99,14 @@ model ContactMessage {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model Visitor {
+  id        String   @id @default(uuid())
+  ip        String
+  country   String?
+  city      String?
+  page      String
+  userAgent String?
+  referer   String?
+  createdAt DateTime @default(now())
+}

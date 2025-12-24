@@ -16,6 +16,7 @@ import {
   Settings,
   Bell,
   ChevronDown,
+  BarChart3,
 } from "lucide-react";
 
 const navItems = [
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
   { href: "/admin/contact", label: "Contact", icon: Mail },
   { href: "/admin/footer", label: "Footer", icon: PanelBottom },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

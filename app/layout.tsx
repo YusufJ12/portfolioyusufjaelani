@@ -8,6 +8,7 @@ import { Toaster } from 'sonner';
 import { Footer } from "@/components/global/Footer";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import VisitorTracker from "@/components/VisitorTracker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="antialiased bg-sa-light-bg text-sa-light-accent dark:bg-sa-dark-bg dark:text-sa-dark-text-main">
         <Analytics />
         <SpeedInsights />
+        <VisitorTracker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
      {children}
