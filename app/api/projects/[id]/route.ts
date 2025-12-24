@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { id } = await params;
     const project = await db.project.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
     });
 
     if (!project) {
@@ -42,7 +42,7 @@ export async function PUT(
     const body = await request.json();
 
     const project = await db.project.update({
-      where: { id: parseInt(id) },
+      where: { id },
       data: {
         ...body,
         tags: body.tags ? JSON.stringify(body.tags) : undefined,
@@ -70,7 +70,7 @@ export async function DELETE(
   try {
     const { id } = await params;
     await db.project.delete({
-      where: { id: parseInt(id) },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Project deleted" });
