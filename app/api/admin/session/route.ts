@@ -30,9 +30,17 @@ export async function GET() {
         );
       }
 
+      // Fetch admin email from database
+      const { db } = await import("@/lib/db");
+      const admin = await db.admin.findUnique({
+        where: { id: parseInt(adminId) },
+        select: { email: true },
+      });
+
       return NextResponse.json({
         authenticated: true,
         adminId: parseInt(adminId),
+        email: admin?.email || "admin@example.com",
       });
     } catch {
       return NextResponse.json(

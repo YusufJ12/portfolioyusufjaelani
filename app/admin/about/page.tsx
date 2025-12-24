@@ -576,27 +576,120 @@ export default function AdminAboutPage() {
                     required
                   />
                   <input
-                    placeholder="Start Date (e.g., Oct 2021)"
+                    placeholder="Start Date (e.g., 2023)"
                     value={expFormData.startDate}
                     onChange={(e) => setExpFormData({ ...expFormData, startDate: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
                     required
                   />
                   <input
-                    placeholder="End Date (e.g., Present)"
+                    placeholder="End Date (e.g., Sekarang)"
                     value={expFormData.endDate}
                     onChange={(e) => setExpFormData({ ...expFormData, endDate: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
                   />
                 </div>
                 <textarea
-                  placeholder="Description"
+                  placeholder="Description (supports multiple lines)"
                   value={expFormData.description}
                   onChange={(e) => setExpFormData({ ...expFormData, description: e.target.value })}
-                  rows={3}
+                  rows={4}
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
                   required
                 />
+
+                {/* Achievements Section */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9]">
+                    Achievements
+                  </label>
+                  {expFormData.achievements.map((achievement, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        value={achievement}
+                        onChange={(e) => {
+                          const newAchievements = [...expFormData.achievements];
+                          newAchievements[index] = e.target.value;
+                          setExpFormData({ ...expFormData, achievements: newAchievements });
+                        }}
+                        className="flex-1 px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
+                        placeholder="Achievement..."
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newAchievements = expFormData.achievements.filter((_, i) => i !== index);
+                          setExpFormData({ ...expFormData, achievements: newAchievements });
+                        }}
+                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setExpFormData({ ...expFormData, achievements: [...expFormData.achievements, ""] })}
+                    className="flex items-center gap-1 text-sm text-[#ffe400] hover:underline"
+                  >
+                    <Plus size={14} /> Add Achievement
+                  </button>
+                </div>
+
+                {/* Website Links Section */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9]">
+                    Website Links
+                  </label>
+                  {expFormData.websiteLinks.map((link, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        value={typeof link === 'string' ? link : (link as { name: string; url: string }).name || ""}
+                        onChange={(e) => {
+                          const newLinks = [...expFormData.websiteLinks];
+                          if (typeof newLinks[index] === 'string') {
+                            newLinks[index] = e.target.value;
+                          } else {
+                            (newLinks[index] as { name: string; url: string }).name = e.target.value;
+                          }
+                          setExpFormData({ ...expFormData, websiteLinks: newLinks });
+                        }}
+                        className="w-1/3 px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
+                        placeholder="Name"
+                      />
+                      <input
+                        value={typeof link === 'string' ? "" : (link as { name: string; url: string }).url || ""}
+                        onChange={(e) => {
+                          const newLinks = [...expFormData.websiteLinks];
+                          if (typeof newLinks[index] !== 'string') {
+                            (newLinks[index] as { name: string; url: string }).url = e.target.value;
+                          }
+                          setExpFormData({ ...expFormData, websiteLinks: newLinks });
+                        }}
+                        className="flex-1 px-4 py-2 rounded-lg border border-gray-200 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9]"
+                        placeholder="https://..."
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newLinks = expFormData.websiteLinks.filter((_, i) => i !== index);
+                          setExpFormData({ ...expFormData, websiteLinks: newLinks });
+                        }}
+                        className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setExpFormData({ ...expFormData, websiteLinks: [...expFormData.websiteLinks, { name: "", url: "" }] as never[] })}
+                    className="flex items-center gap-1 text-sm text-[#ffe400] hover:underline"
+                  >
+                    <Plus size={14} /> Add Website Link
+                  </button>
+                </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
