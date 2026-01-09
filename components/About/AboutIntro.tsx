@@ -41,7 +41,9 @@ export function AboutIntro() {
     if (isMobile) {
       // Tampilkan konfirmasi untuk perangkat mobile
       const confirmed = window.confirm(
-        `Apakah Anda ingin mengunduh resume ${profile?.name || "Yusuf Jaelani"}?`
+        `Apakah Anda ingin mengunduh resume ${
+          profile?.name || "Yusuf Jaelani"
+        }?`
       );
       if (confirmed) {
         window.location.href = resumeUrl;
@@ -60,7 +62,9 @@ export function AboutIntro() {
     );
   }
 
-  const description = profile?.description || "Halo! Saya Yusuf Jaelani, seorang Full Stack Web Developer Android Developer yang berdomisili di Semarang. Saya suka membangun aplikasi web dan mobile yang indah, responsif, dan ramah pengguna, sambil terus meningkatkan skill dan belajar teknologi terbaru.";
+  const description =
+    profile?.description ||
+    "Halo! Saya Yusuf Jaelani, seorang Full Stack Web Developer Android Developer yang berdomisili di Semarang. Saya suka membangun aplikasi web dan mobile yang indah, responsif, dan ramah pengguna, sambil terus meningkatkan skill dan belajar teknologi terbaru.";
 
   return (
     <div className="space-y-6">
@@ -86,10 +90,9 @@ export function AboutIntro() {
           className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#ffe400] 
           text-[#101010] dark:text-[#94A9C9] rounded-full font-semibold hover:scale-105 transition-transform"
         >
-          Resume <Download className="w-4 h-4" />
+          CV <Download className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
 }
-
