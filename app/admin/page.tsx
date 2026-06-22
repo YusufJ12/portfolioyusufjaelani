@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FolderKanban, MessageSquare, Eye, TrendingUp } from "lucide-react";
+import Link from "next/link";
 
 interface Stats {
   projects: number;
@@ -119,7 +120,7 @@ export default function AdminDashboard() {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a
+          <Link
             href="/admin/projects"
             className="p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-200 dark:border-[#222F43] hover:border-[#ffe400] transition-colors"
           >
@@ -130,8 +131,8 @@ export default function AdminDashboard() {
             <p className="text-sm text-gray-500 dark:text-[#66768f]">
               Add, edit, or delete projects
             </p>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/about"
             className="p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-200 dark:border-[#222F43] hover:border-[#ffe400] transition-colors"
           >
@@ -142,9 +143,9 @@ export default function AdminDashboard() {
             <p className="text-sm text-gray-500 dark:text-[#66768f]">
               Update your about page
             </p>
-          </a>
-          <a
-            href="/admin/messages"
+          </Link>
+          <Link
+            href="/admin/contact"
             className="p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-200 dark:border-[#222F43] hover:border-[#ffe400] transition-colors"
           >
             <MessageSquare className="w-6 h-6 text-[#ffe400] mb-2" />
@@ -154,7 +155,7 @@ export default function AdminDashboard() {
             <p className="text-sm text-gray-500 dark:text-[#66768f]">
               Check contact form submissions
             </p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

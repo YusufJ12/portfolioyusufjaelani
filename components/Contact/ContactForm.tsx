@@ -18,27 +18,17 @@ export function ContactForm() {
     setLoading(true);
   
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
-        body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY, // Ambil dari .env.local
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          from_name: "Portfolio Contact Form", // Nama pengirim yang terlihat di email
-          botcheck: false, // Optional: Spam prevention
-          reply_to: "yusufjaelani@gmail.com", // Email tujuan utama
-        }),
+        body: JSON.stringify(formData),
       });
   
       const result = await response.json();
   
-      if (result.success) {
+      if (response.ok && result.success) {
         toast.success("Thank you for your message! I'll get back to you soon.");
         // Reset form
         setFormData({
@@ -196,4 +186,4 @@ export function ContactForm() {
       </button>
     </form>
   );
-} 
+}

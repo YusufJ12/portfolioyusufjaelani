@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 // GET /api/education - Get all education & certifications
 export async function GET() {
@@ -21,6 +22,10 @@ export async function GET() {
 // POST /api/education - Create new education/certification
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { type, title, institution, year, certificateUrl, order } = body;
     

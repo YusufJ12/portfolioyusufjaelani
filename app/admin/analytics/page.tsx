@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Loader2, Globe, Users, Eye, MapPin, RefreshCw } from "lucide-react";
 
 interface Visitor {
@@ -27,11 +27,7 @@ export default function AdminAnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [days]);
-
-  async function fetchAnalytics() {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/analytics/track?days=${days}`);
@@ -43,7 +39,11 @@ export default function AdminAnalyticsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [days]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   function formatDate(dateStr: string) {
     const date = new Date(dateStr);

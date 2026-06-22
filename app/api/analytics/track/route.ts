@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
+import { isIP } from "net";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 // POST /api/analytics/track - Track page visit
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { page } = body;
+    const page =
+      typeof body.page === "string" ? body.page.slice(0, 500) : "/";
 
     const headersList = await headers();
     
@@ -24,9 +27,12 @@ export async function POST(request: Request) {
     let country = null;
     let city = null;
 
-    if (ip !== "unknown" && ip !== "::1" && ip !== "127.0.0.1") {
+    if (isIP(ip) && ip !== "::1" && ip !== "127.0.0.1") {
       try {
-        const geoRes = await fetch(`http://ip-api.com/json/${ip}?fields=country,city`);
+        const geoRes = await fetch(
+          `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=country,city`,
+          { signal: AbortSignal.timeout(3000) }
+        );
         if (geoRes.ok) {
           const geoData = await geoRes.json();
           country = geoData.country || null;
@@ -43,7 +49,7 @@ export async function POST(request: Request) {
         ip,
         country,
         city,
-        page: page || "/",
+        page,
         userAgent,
         referer,
       },
@@ -59,8 +65,15 @@ export async function POST(request: Request) {
 // GET /api/analytics/track - Get analytics data (for admin)
 export async function GET(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
-    const days = parseInt(searchParams.get("days") || "7");
+    const requestedDays = Number.parseInt(searchParams.get("days") || "7", 10);
+    const days = Number.isFinite(requestedDays)
+      ? Math.min(Math.max(requestedDays, 1), 365)
+      : 7;
 
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);

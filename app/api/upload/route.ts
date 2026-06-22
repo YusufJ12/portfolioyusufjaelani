@@ -1,17 +1,37 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
 
 export async function POST(request: Request) {
   try {
-    const formData = await request.formData();
-    const file = formData.get("file") as File;
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    if (!file) {
+    const formData = await request.formData();
+    const file = formData.get("file");
+
+    if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Upload to Vercel Blob
-    const blob = await put(`projects/${file.name}`, file, {
+    if (!ALLOWED_IMAGE_TYPES.has(file.type) || file.size > MAX_IMAGE_SIZE) {
+      return NextResponse.json(
+        { error: "Only JPEG, PNG, WebP, or GIF images up to 5 MB are allowed" },
+        { status: 400 }
+      );
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const blob = await put(`projects/${safeName}`, file, {
       access: 'public',
       addRandomSuffix: true,
     });
@@ -20,7 +40,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
-      { error: "Failed to upload image", details: String(error) },
+      { error: "Failed to upload image" },
       { status: 500 }
     );
   }

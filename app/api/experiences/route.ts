@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { Experience } from "@prisma/client";
 
 // GET /api/experiences - Get all experiences
@@ -44,6 +45,10 @@ export async function GET() {
 // POST /api/experiences - Create new experience
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { title, company, description, startDate, endDate, achievements, websiteLinks, order } = body;
     

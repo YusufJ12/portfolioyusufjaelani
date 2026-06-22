@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { Skill } from "@prisma/client";
 
 // GET /api/skills - Get all skills
@@ -36,6 +37,10 @@ export async function GET() {
 // POST /api/skills - Create new skill
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { category, name, description, icon, technologies, order } = body;
     

@@ -1,12 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { createContext, useState, useMemo, useEffect } from 'react';
 
 const ITEMS_PER_PAGE = 9;
 
 type Project = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   imageUrl: string | null;
@@ -18,6 +16,10 @@ type Project = {
   order: number;
 };
 
+type DisplayProject = Project & {
+  image: string;
+};
+
 type ProjectsFilterContextType = {
   activeFilter: string;
   setActiveFilter: (filter: string) => void;
@@ -27,7 +29,7 @@ type ProjectsFilterContextType = {
   totalPages: number;
   handlePageChange: (page: number) => void;
   filters: string[];
-  filteredProjects: any[];
+  filteredProjects: DisplayProject[];
   totalProjects: number;
   loading: boolean;
 };
@@ -35,10 +37,10 @@ type ProjectsFilterContextType = {
 export const ProjectsFilterContext = createContext<ProjectsFilterContextType | null>(null);
 
 export function ProjectsFilterProvider({ children }: { children: React.ReactNode }) {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<DisplayProject[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilterState] = useState("All");
+  const [searchQuery, setSearchQueryState] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   const filters = ["All", "Web", "Mobile", "UI/UX", "Other"];
@@ -51,7 +53,7 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
         if (res.ok) {
           const data = await res.json();
           // Transform data to match expected format
-          const transformed = data.map((p: Project) => ({
+          const transformed: DisplayProject[] = data.map((p: Project) => ({
             ...p,
             image: p.imageUrl || '/projects/p1.jpg', // Fallback image
           }));
@@ -88,10 +90,15 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
     );
   }, [filteredProjects, currentPage]);
 
-  // Reset to first page when filter or search changes
-  useMemo(() => {
+  const setActiveFilter = (filter: string) => {
+    setActiveFilterState(filter);
     setCurrentPage(1);
-  }, [activeFilter, searchQuery]);
+  };
+
+  const setSearchQuery = (query: string) => {
+    setSearchQueryState(query);
+    setCurrentPage(1);
+  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

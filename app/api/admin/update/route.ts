@@ -1,28 +1,22 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { getAuthenticatedAdmin } from "@/lib/admin-auth";
 
 // PUT /api/admin/update - Update admin credentials
 export async function PUT(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("admin-session");
-
-    if (!sessionCookie) {
+    const sessionAdmin = await getAuthenticatedAdmin();
+    if (!sessionAdmin) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    // Get admin ID from session
-    const decoded = Buffer.from(sessionCookie.value, "base64").toString();
-    const [adminId] = decoded.split(":");
 
     const body = await request.json();
     const { email, currentPassword, newPassword } = body;
 
     // Get current admin
     const admin = await db.admin.findUnique({
-      where: { id: parseInt(adminId) },
+      where: { id: sessionAdmin.id },
     });
 
     if (!admin) {
@@ -77,7 +71,7 @@ export async function PUT(request: Request) {
     // Update admin
     if (Object.keys(updateData).length > 0) {
       await db.admin.update({
-        where: { id: parseInt(adminId) },
+        where: { id: sessionAdmin.id },
         data: updateData,
       });
     }

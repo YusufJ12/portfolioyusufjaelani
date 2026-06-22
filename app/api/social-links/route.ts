@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 // GET /api/social-links - Get all social links
 export async function GET() {
@@ -21,6 +22,10 @@ export async function GET() {
 // POST /api/social-links - Create new social link
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     
     const socialLink = await db.socialLink.create({

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Project } from "@prisma/client";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 // GET /api/projects - Get all projects
 export async function GET(request: Request) {
@@ -53,10 +54,14 @@ export async function GET(request: Request) {
 // POST /api/projects - Create new project
 export async function POST(request: Request) {
   try {
+    if (!(await isAdminAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     
     // Exclude id to let the database auto-generate it
-    const { id, ...projectData } = body;
+    const projectData = body;
     
     const project = await db.project.create({
       data: {
@@ -76,7 +81,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error creating project:", error);
     return NextResponse.json(
-      { error: "Failed to create project", details: String(error) },
+      { error: "Failed to create project" },
       { status: 500 }
     );
   }
