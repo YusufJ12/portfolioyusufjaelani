@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { ArrowLeft, KeyRound, Mail, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, KeyRound, Mail, ShieldCheck } from "lucide-react";
 
 const MySwal = withReactContent(Swal);
 
@@ -28,7 +28,6 @@ export default function ForgotPasswordPage() {
   const [resetToken, setResetToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [useMasterKey, setUseMasterKey] = useState(false);
-  const [hintOtp, setHintOtp] = useState<string | null>(null);
 
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,18 +44,12 @@ export default function ForgotPasswordPage() {
 
       if (res.ok) {
         setResetToken(data.resetToken || "");
-        if (data.devOtp) {
-          setHintOtp(data.devOtp);
-          setOtp(data.devOtp);
-        }
         setStep(2);
         MySwal.fire({
           ...swalConfig,
           icon: "success",
-          title: "Permintaan Diproses",
-          html: data.devOtp
-            ? `Kode OTP verifikasi Anda: <b class="text-xl text-[#ffe400]">${data.devOtp}</b>`
-            : "Kode OTP verifikasi telah dikirimkan ke email Anda.",
+          title: "Kode Terkirim!",
+          text: data.message || "Kode OTP telah dikirim ke email Anda. Silakan periksa inbox atau spam.",
         });
       } else {
         MySwal.fire({
@@ -197,14 +190,6 @@ export default function ForgotPasswordPage() {
           ) : (
             /* STEP 2: Verify & Reset */
             <form onSubmit={handleResetPassword} className="space-y-4">
-              {hintOtp && (
-                <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-xs text-amber-600 dark:text-amber-400 flex items-center gap-2 mb-2">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>
-                    Kode OTP Anda: <b>{hintOtp}</b>
-                  </span>
-                </div>
-              )}
 
               {!useMasterKey ? (
                 <div>

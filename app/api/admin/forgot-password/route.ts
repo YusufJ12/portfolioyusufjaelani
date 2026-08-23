@@ -88,17 +88,11 @@ export async function POST(request: Request) {
         }
       }
 
-      const isDev = process.env.NODE_ENV !== "production";
-
       return NextResponse.json({
         success: true,
         emailSent,
-        message: emailSent
-          ? `Kode OTP telah dikirimkan ke email ${normalizedEmail}.`
-          : "Permintaan reset diproses. Silakan masukkan kode OTP.",
+        message: `Kode OTP verifikasi telah dikirimkan ke email ${normalizedEmail}. Silakan periksa inbox / spam email Anda.`,
         resetToken: token,
-        // If email could not be delivered or in local environment, provide fallback OTP
-        devOtp: (!emailSent || isDev) ? generatedOtp : undefined,
       });
     }
 

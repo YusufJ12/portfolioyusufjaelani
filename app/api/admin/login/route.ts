@@ -25,13 +25,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const admin = await db.admin.findUnique({
-      where: { email: email.trim().toLowerCase() },
+    const normalizedEmail = email.trim().toLowerCase();
+    let admin = await db.admin.findUnique({
+      where: { email: normalizedEmail },
     });
 
     if (!admin) {
+      const allAdmins = await db.admin.findMany();
+      admin =
+        allAdmins.find(
+          (a) => a.email.trim().toLowerCase() === normalizedEmail
+        ) || null;
+    }
+
+    if (!admin) {
       return NextResponse.json(
-        { error: "Invalid credentials" },
+        { error: "Email atau password salah" },
         { status: 401 }
       );
     }
