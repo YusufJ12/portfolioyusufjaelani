@@ -42,10 +42,11 @@ export default function AdminLayout({
   const [adminEmail, setAdminEmail] = useState<string>("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const isLoginPage = pathname === "/admin/login";
+  const isAuthPage =
+    pathname === "/admin/login" || pathname === "/admin/forgot-password";
 
   useEffect(() => {
-    if (isLoginPage) {
+    if (isAuthPage) {
       setIsAuthenticated(false);
       return;
     }
@@ -63,14 +64,14 @@ export default function AdminLayout({
       .catch(() => {
         router.push("/admin/login");
       });
-  }, [router, isLoginPage]);
+  }, [router, isAuthPage]);
 
   const handleLogout = async () => {
     await fetch("/api/admin/session", { method: "DELETE" });
     router.push("/admin/login");
   };
 
-  if (isLoginPage) {
+  if (isAuthPage) {
     return <>{children}</>;
   }
 
