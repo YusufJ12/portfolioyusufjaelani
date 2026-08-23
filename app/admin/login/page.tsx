@@ -88,7 +88,6 @@ export default function AdminLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] focus:border-transparent outline-none transition-all"
-                placeholder="yusufjaelani@gmail.com"
               />
             </div>
 
@@ -110,7 +109,6 @@ export default function AdminLoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] focus:border-transparent outline-none transition-all"
-                placeholder="••••••••"
               />
             </div>
 

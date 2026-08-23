@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { ArrowLeft, KeyRound, Mail, ShieldCheck } from "lucide-react";
+import { ArrowLeft, KeyRound, Lock, Mail, ShieldCheck } from "lucide-react";
 
 const MySwal = withReactContent(Swal);
 
@@ -19,59 +19,12 @@ const swalConfig = {
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
-  const [step, setStep] = useState<1 | 2>(1);
-  const [email, setEmail] = useState("yusufjaelani@gmail.com");
-  const [otp, setOtp] = useState("");
+  const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [masterKey, setMasterKey] = useState("");
-  const [resetToken, setResetToken] = useState("");
   const [loading, setLoading] = useState(false);
-  const [useMasterKey, setUseMasterKey] = useState(false);
 
-  const handleRequestOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/admin/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "request", email }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setResetToken(data.resetToken || "");
-        setStep(2);
-        MySwal.fire({
-          ...swalConfig,
-          icon: "success",
-          title: "Kode Terkirim!",
-          text: data.message || "Kode OTP telah dikirim ke email Anda. Silakan periksa inbox atau spam.",
-        });
-      } else {
-        MySwal.fire({
-          ...swalConfig,
-          icon: "error",
-          title: "Gagal Mengirim",
-          text: data.error || "Terjadi kesalahan saat memproses permintaan.",
-        });
-      }
-    } catch {
-      MySwal.fire({
-        ...swalConfig,
-        icon: "error",
-        title: "Kesalahan Jaringan",
-        text: "Tidak dapat terhubung ke server.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResetPassword = async (e: React.FormEvent) => {
+  const handleDirectReset = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
@@ -101,12 +54,8 @@ export default function ForgotPasswordPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "reset",
           email,
-          otp: useMasterKey ? undefined : otp,
-          masterKey: useMasterKey ? masterKey : undefined,
           newPassword,
-          resetToken,
         }),
       });
 
@@ -116,7 +65,7 @@ export default function ForgotPasswordPage() {
         await MySwal.fire({
           ...swalConfig,
           icon: "success",
-          title: "Password Berhasil Diubah!",
+          title: "Password Berhasil Diperbarui!",
           text: "Silakan login menggunakan password baru Anda.",
         });
         router.push("/admin/login");
@@ -124,8 +73,8 @@ export default function ForgotPasswordPage() {
         MySwal.fire({
           ...swalConfig,
           icon: "error",
-          title: "Reset Gagal",
-          text: data.error || "Kode verifikasi salah atau kedaluwarsa.",
+          title: "Gagal Mengubah Password",
+          text: data.error || "Terjadi kesalahan saat menyimpan password.",
         });
       }
     } catch {
@@ -133,7 +82,7 @@ export default function ForgotPasswordPage() {
         ...swalConfig,
         icon: "error",
         title: "Kesalahan Jaringan",
-        text: "Tidak dapat memproses reset password.",
+        text: "Tidak dapat terhubung ke server.",
       });
     } finally {
       setLoading(false);
@@ -150,144 +99,72 @@ export default function ForgotPasswordPage() {
               <KeyRound className="w-7 h-7 text-[#ffe400]" />
             </div>
             <h1 className="text-2xl font-bold text-[#101010] dark:text-[#94A9C9]">
-              Lupa Password CMS
+              Reset Password Admin
             </h1>
             <p className="text-gray-500 dark:text-[#66768f] mt-2 text-sm">
-              {step === 1
-                ? "Masukkan email admin untuk menerima kode verifikasi OTP"
-                : "Masukkan kode verifikasi dan atur password baru"}
+              Masukkan email dan ketik password baru untuk akun CMS Anda
             </p>
           </div>
 
-          {step === 1 ? (
-            /* STEP 1: Request OTP */
-            <form onSubmit={handleRequestOtp} className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-2">
-                  Email Admin
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] focus:border-transparent outline-none transition-all"
-                    placeholder="yusufjaelani@gmail.com"
-                  />
-                </div>
+          {/* Form Reset Langsung */}
+          <form onSubmit={handleDirectReset} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1.5">
+                Email Admin
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] focus:border-transparent outline-none transition-all"
+                />
               </div>
+            </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 px-4 bg-[#ffe400] text-[#101010] font-semibold rounded-lg hover:bg-[#e6cd00] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {loading ? "Mengirim Kode..." : "Kirim Kode Verifikasi"}
-              </button>
-            </form>
-          ) : (
-            /* STEP 2: Verify & Reset */
-            <form onSubmit={handleResetPassword} className="space-y-4">
-
-              {!useMasterKey ? (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1">
-                    Kode Verifikasi (OTP 6 Digit)
-                  </label>
-                  <input
-                    type="text"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required={!useMasterKey}
-                    maxLength={6}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] text-center tracking-widest text-lg font-bold focus:ring-2 focus:ring-[#ffe400] outline-none"
-                    placeholder="123456"
-                  />
-                  <div className="flex justify-between items-center mt-1">
-                    <span className="text-xs text-gray-500">Cek inbox email Anda</span>
-                    <button
-                      type="button"
-                      onClick={() => setUseMasterKey(true)}
-                      className="text-xs text-[#ffe400] hover:underline"
-                    >
-                      Pakai Master Key?
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1">
-                    Master Secret Key
-                  </label>
-                  <input
-                    type="password"
-                    value={masterKey}
-                    onChange={(e) => setMasterKey(e.target.value)}
-                    required={useMasterKey}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] outline-none"
-                    placeholder="Masukkan Master Key"
-                  />
-                  <div className="flex justify-end mt-1">
-                    <button
-                      type="button"
-                      onClick={() => setUseMasterKey(false)}
-                      className="text-xs text-[#ffe400] hover:underline"
-                    >
-                      Gunakan Kode OTP
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1">
-                  Password Baru
-                </label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1.5">
+                Password Baru
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] outline-none"
-                  placeholder="Minimal 6 karakter"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] outline-none transition-all"
                 />
               </div>
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1">
-                  Konfirmasi Password Baru
-                </label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#94A9C9] mb-1.5">
+                Konfirmasi Password Baru
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] outline-none"
-                  placeholder="Ketik ulang password baru"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-300 dark:border-[#222F43] bg-white dark:bg-[#0F172A] text-[#101010] dark:text-[#94A9C9] focus:ring-2 focus:ring-[#ffe400] outline-none transition-all"
                 />
               </div>
+            </div>
 
-              <div className="flex gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  className="w-1/3 py-3 px-3 bg-gray-200 dark:bg-[#222F43] text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 transition-all text-sm"
-                >
-                  Kembali
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-2/3 py-3 px-4 bg-[#ffe400] text-[#101010] font-semibold rounded-lg hover:bg-[#e6cd00] disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm flex items-center justify-center gap-2"
-                >
-                  <ShieldCheck className="w-4 h-4" />
-                  {loading ? "Menyimpan..." : "Reset Password"}
-                </button>
-              </div>
-            </form>
-          )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 bg-[#ffe400] text-[#101010] font-semibold rounded-lg hover:bg-[#e6cd00] disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm flex items-center justify-center gap-2 mt-4"
+            >
+              <ShieldCheck className="w-5 h-5" />
+              {loading ? "Menyimpan Password..." : "Simpan Password Baru"}
+            </button>
+          </form>
 
           {/* Footer Back Link */}
           <div className="mt-6 text-center">
