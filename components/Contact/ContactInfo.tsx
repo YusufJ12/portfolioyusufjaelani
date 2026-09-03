@@ -40,8 +40,8 @@ export function ContactInfo() {
   }
 
   const email = profile?.email || "yusufjaelani@gmail.com";
-  const phone = profile?.phone || "+6282243993431";
-  const location = profile?.location || "Semarang City, Indonesia";
+  const phone = profile?.phone || "+62 822 4399 3431";
+  const location = profile?.location || "Semarang, Jawa Tengah";
   
   // Clean phone number for WhatsApp link
   const waPhone = phone.replace(/\D/g, "");

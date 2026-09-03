@@ -14,6 +14,28 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: "NexSphere ERP — Enterprise Distributed Microservices Platform",
+    description:
+      "Arsitektur microservices terdistribusi dengan Microsoft YARP API Gateway, autentikasi terpusat (JWT & refresh token rotation), query latensi sub-millisecond (< 0.3 ms) EF Core PostgreSQL 16 pada > 1.000.000 data transaksi, SignalR + Redis 7 Pub/Sub Backplane, dan Pluggable Module Store.",
+    image: p2,
+    tags: [".NET 10", "ASP.NET Core", "Microsoft YARP", "Angular", "PostgreSQL 16", "Redis 7", "SignalR", "Docker"],
+    category: "Web",
+    liveUrl: "",
+    githubUrl: "",
+    featured: true,
+  },
+  {
+    title: "SmartCBT & Assessment Engine — High-Concurrency Exam Platform",
+    description:
+      "Mesin Computer-Based Testing (CBT) berkemampuan menangani ribuan sesi ujian simultan secara stabil via in-memory caching Redis untuk validasi jawaban dan anti-loss state preservation, serta real-time proctoring deteksi kecurangan.",
+    image: p7,
+    tags: ["Laravel 12", "Vue.js 3", "MySQL", "Redis Caching", "WebSocket", "Tailwind CSS"],
+    category: "Web",
+    liveUrl: "",
+    githubUrl: "",
+    featured: true,
+  },
+  {
     title: "Healty Slim 30",
     description:
       "Webiste Diet yang saya buat menggunakan Laravel 10 dan Bootstrap dengan Payment Gateway dari Midtrans.",

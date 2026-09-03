@@ -13,6 +13,45 @@ type Education = {
   order: number;
 };
 
+const defaultEducation: Education[] = [
+  {
+    id: 1,
+    type: "education",
+    title: "D4 Manajemen Informatika (IPK: 3.29)",
+    institution: "Universitas Sains dan Teknologi Komputer (STEKOM)",
+    year: "2016 – 2022",
+    certificateUrl: null,
+    order: 1,
+  },
+  {
+    id: 2,
+    type: "certification",
+    title: "JavaScript Algorithms and Data Structures",
+    institution: "freeCodeCamp",
+    year: "2022",
+    certificateUrl: "https://www.freecodecamp.org/certification/fcc22eb7fe7-aa12-4c66-9b97-0e7922f99924/javascript-algorithms-and-data-structures",
+    order: 2,
+  },
+  {
+    id: 3,
+    type: "certification",
+    title: "Responsive Web Design",
+    institution: "freeCodeCamp",
+    year: "2022",
+    certificateUrl: "https://www.freecodecamp.org/certification/fcc22eb7fe7-aa12-4c66-9b97-0e7922f99924/responsive-web-design",
+    order: 3,
+  },
+  {
+    id: 4,
+    type: "education",
+    title: "Teknik Komputer & Jaringan (TKJ)",
+    institution: "SMK Askhabul Kahfi",
+    year: "2010 – 2013",
+    certificateUrl: null,
+    order: 4,
+  },
+];
+
 export function AboutEducation() {
   const [education, setEducation] = useState<Education[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +62,9 @@ export function AboutEducation() {
         const res = await fetch('/api/education');
         if (res.ok) {
           const data = await res.json();
-          setEducation(data);
+          if (Array.isArray(data) && data.length > 0) {
+            setEducation(data);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch education:', error);
@@ -33,6 +74,8 @@ export function AboutEducation() {
     }
     fetchEducation();
   }, []);
+
+  const displayEducation = education.length > 0 ? education : defaultEducation;
 
   if (loading) {
     return (
@@ -59,7 +102,7 @@ export function AboutEducation() {
         </h3>
       </div>
       <div className="space-y-4">
-        {education.map((item, index) => (
+        {displayEducation.map((item, index) => (
           <div
             key={item.id}
             className="group p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-100 

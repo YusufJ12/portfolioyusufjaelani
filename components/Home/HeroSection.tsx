@@ -66,10 +66,10 @@ export function HeroSection() {
   // Default fallback values - use correct field names from database
   const name = profile?.name || "Yusuf Jaelani";
   // title can be comma-separated for multiple phrases in typewriter
-  const title = profile?.title || "Android Developer,Full Stack Web Developer";
+  const title = profile?.title || "Senior Software Engineer,System Architect";
   // heroTagline is used for the availability badge
   const heroTagline = profile?.heroTagline || "Tersedia untuk pekerjaan lepas (freelance)";
-  const description = profile?.description || "Full Stack Web Developer yang berfokus pada pembuatan aplikasi web berkualitas tinggi.";
+  const description = profile?.description || "Senior Software Engineer & System Architect dengan pengalaman lebih dari 5 tahun dalam rekayasa perangkat lunak enterprise, perancangan arsitektur Modular Monolith (Laravel 12) dan Distributed Microservices (.NET / ASP.NET Core).";
 
   // Parse title into array for typewriter (comma-separated)
   const phrases = title.split(",").map((s: string) => s.trim()).filter(Boolean);
@@ -124,6 +124,9 @@ export function HeroSection() {
           style={{ animationDelay: "0.4s" }}
           dangerouslySetInnerHTML={{
             __html: description
+              .replace(/Senior Software Engineer & System Architect/g, '<span class="text-[#ffe400] font-medium">Senior Software Engineer & System Architect</span>')
+              .replace(/Modular Monolith \(Laravel 12\)/g, '<span class="text-[#ffe400]">Modular Monolith (Laravel 12)</span>')
+              .replace(/Distributed Microservices \(\.NET \/ ASP\.NET Core\)/g, '<span class="text-[#ffe400]">Distributed Microservices (.NET / ASP.NET Core)</span>')
               .replace(/aplikasi web berkualitas tinggi/g, '<span class="text-[#ffe400]">aplikasi web berkualitas tinggi</span>')
               .replace(/produk digital yang sukses/g, '<span class="text-[#ffe400]">produk digital yang sukses</span>')
           }}

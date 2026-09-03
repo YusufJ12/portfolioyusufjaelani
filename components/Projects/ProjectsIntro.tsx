@@ -7,9 +7,8 @@ export function ProjectsIntro() {
     <div className="space-y-6 animate-slideInUp">
       <div className="relative">
         <p className="text-gray-600 dark:text-[#66768f] leading-relaxed text-center max-w-2xl mx-auto">
-          Jelajahi portofolio proyek saya yang menampilkan keahlian saya dalam 
-          Web Developer, mulai dari aplikasi responsif hingga solusi inovatif 
-          menggunakan teknologi modern.
+          Jelajahi portofolio proyek dan arsitektur sistem yang menampilkan keahlian dalam perancangan 
+          enterprise software, distributed microservices, modular monolith, hingga solusi web dan mobile performa tinggi.
         </p>
       </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Save, Loader2, Eye, EyeOff } from "lucide-react";
+import { Save, Loader2, Eye, EyeOff, Database, RefreshCw } from "lucide-react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -18,6 +18,7 @@ const swalConfig = {
 export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -133,44 +134,87 @@ export default function AdminSettingsPage() {
     );
   }
 
+  async function handleSyncCV() {
+    const result = await MySwal.fire({
+      ...swalConfig,
+      icon: "question",
+      title: "Sinkronkan Data CV ke Database?",
+      text: "Ini akan memperbarui Profil, Keahlian (Skills terkelompok), Pengalaman Kerja, Pendidikan, dan Proyek Unggulan langsung di database Anda sesuai CV terbaru.",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Sinkronkan Sekarang",
+      cancelButtonText: "Batal",
+    });
+
+    if (!result.isConfirmed) return;
+
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/admin/sync-cv", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        MySwal.fire({
+          ...swalConfig,
+          icon: "success",
+          title: "Berhasil Disinkronkan!",
+          text: data.message || "Database berhasil diperbarui dengan data CV terbaru.",
+        });
+      } else {
+        MySwal.fire({
+          ...swalConfig,
+          icon: "error",
+          title: "Gagal Sinkronisasi",
+          text: data.error || data.details || "Terjadi kesalahan saat menyinkronkan data.",
+        });
+      }
+    } catch (err: any) {
+      MySwal.fire({
+        ...swalConfig,
+        icon: "error",
+        title: "Error",
+        text: err?.message || "Koneksi ke server gagal.",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  }
+
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-bold text-[#101010] dark:text-[#94A9C9] mb-6">
-        Account Settings
-      </h1>
+    <div className="max-w-2xl mx-auto space-y-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#101010] dark:text-[#94A9C9]">
+          Settings
+        </h1>
+        <p className="text-gray-500 dark:text-[#66768f]">
+          Manage your account settings and preferences.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Email Section */}
-        <div className="bg-white dark:bg-[#131C31] rounded-xl p-4 md:p-6 border border-gray-200 dark:border-[#222F43]">
-          <h2 className="text-lg font-semibold text-[#101010] dark:text-[#94A9C9] mb-4">
-            Email Address
+        {/* Account Settings Card */}
+        <div className="bg-white dark:bg-[#131C31] rounded-2xl p-6 border border-gray-200 dark:border-[#222F43] space-y-6">
+          <h2 className="text-lg font-bold text-[#101010] dark:text-[#94A9C9]">
+            Account Credentials
           </h2>
-          <div>
-            <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0F172A] border border-gray-200 dark:border-[#222F43] text-[#101010] dark:text-[#94A9C9] focus:outline-none focus:ring-2 focus:ring-[#ffe400]"
-              required
-            />
-          </div>
-        </div>
-
-        {/* Password Section */}
-        <div className="bg-white dark:bg-[#131C31] rounded-xl p-4 md:p-6 border border-gray-200 dark:border-[#222F43]">
-          <h2 className="text-lg font-semibold text-[#101010] dark:text-[#94A9C9] mb-4">
-            Change Password
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-[#66768f] mb-4">
-            Leave password fields empty if you don&apos;t want to change your password.
-          </p>
 
           <div className="space-y-4">
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-[#0F172A] border border-gray-200 dark:border-[#222F43] text-[#101010] dark:text-[#94A9C9] focus:outline-none focus:ring-2 focus:ring-[#ffe400]"
+                required
+              />
+            </div>
+
             {/* Current Password */}
             <div>
               <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
@@ -184,7 +228,8 @@ export default function AdminSettingsPage() {
                     setFormData({ ...formData, currentPassword: e.target.value })
                   }
                   className="w-full px-4 py-3 pr-12 rounded-lg bg-gray-50 dark:bg-[#0F172A] border border-gray-200 dark:border-[#222F43] text-[#101010] dark:text-[#94A9C9] focus:outline-none focus:ring-2 focus:ring-[#ffe400]"
-                  placeholder="Enter current password"
+                  placeholder="Enter current password to make changes"
+                  required
                 />
                 <button
                   type="button"
@@ -199,7 +244,7 @@ export default function AdminSettingsPage() {
             {/* New Password */}
             <div>
               <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
-                New Password
+                New Password (optional)
               </label>
               <div className="relative">
                 <input
@@ -209,7 +254,7 @@ export default function AdminSettingsPage() {
                     setFormData({ ...formData, newPassword: e.target.value })
                   }
                   className="w-full px-4 py-3 pr-12 rounded-lg bg-gray-50 dark:bg-[#0F172A] border border-gray-200 dark:border-[#222F43] text-[#101010] dark:text-[#94A9C9] focus:outline-none focus:ring-2 focus:ring-[#ffe400]"
-                  placeholder="Enter new password"
+                  placeholder="Leave blank to keep current password"
                 />
                 <button
                   type="button"
@@ -257,16 +302,52 @@ export default function AdminSettingsPage() {
           {saving ? (
             <>
               <Loader2 className="animate-spin" size={20} />
-              Saving...
+              Saving Changes...
             </>
           ) : (
             <>
               <Save size={20} />
-              Save Changes
+              Save Account Changes
             </>
           )}
         </button>
       </form>
+
+      {/* Sync CV to Database Section */}
+      <div className="bg-white dark:bg-[#131C31] rounded-2xl p-6 border border-gray-200 dark:border-[#222F43] space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-[#ffe400]/10 rounded-xl text-[#ffe400]">
+            <Database size={24} />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-[#101010] dark:text-[#94A9C9]">
+              Sinkronisasi Data CV ke Database
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-[#66768f]">
+              Perbarui seluruh isi database (Profil, Skills terkelompok, Pengalaman, Pendidikan, & Proyek) sesuai data CV terbaru secara instan.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleSyncCV}
+          disabled={syncing}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gray-100 hover:bg-[#ffe400] dark:bg-[#0F172A] dark:hover:bg-[#ffe400] text-[#101010] dark:text-[#94A9C9] hover:text-[#101010] dark:hover:text-[#101010] font-semibold rounded-xl border border-gray-200 dark:border-[#222F43] transition-all disabled:opacity-50"
+        >
+          {syncing ? (
+            <>
+              <Loader2 className="animate-spin text-[#ffe400]" size={18} />
+              <span>Menyinkronkan ke Database...</span>
+            </>
+          ) : (
+            <>
+              <RefreshCw size={18} />
+              <span>Sinkronkan Data CV ke Database</span>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 }

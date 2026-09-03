@@ -53,7 +53,7 @@ export function Footer() {
   };
 
   const name = profile?.name || "Yusuf Jaelani";
-  const tagline = profile?.title || "Full Stack Web Developer & Android Developer.";
+  const tagline = profile?.title || "Senior Software Engineer & System Architect";
 
   const displayLinks = socialLinks.length > 0 
     ? socialLinks.map((link) => ({

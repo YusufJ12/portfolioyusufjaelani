@@ -1,12 +1,29 @@
-import React from "react";
-import { Trophy, Code, Users, /*Coffee*/ } from "lucide-react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Trophy, Code, Users } from "lucide-react";
 
 export function AboutStats() {
+  const [projectCount, setProjectCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProjectCount(data.length);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const yearsExp = `${Math.max(5, new Date().getFullYear() - 2020)}+`;
+  const projectsValue = projectCount ? `${projectCount}+` : "20+";
+
   const stats = [
-    { icon: <Trophy className="w-5 h-5" />, value: "3+", label: "Years Experience" },
-    { icon: <Code className="w-5 h-5" />, value: "20+", label: "Projects" },
+    { icon: <Trophy className="w-5 h-5" />, value: yearsExp, label: "Years Experience" },
+    { icon: <Code className="w-5 h-5" />, value: projectsValue, label: "Projects" },
     { icon: <Users className="w-5 h-5" />, value: "20+", label: "Clients" },
-    // { icon: <Coffee className="w-5 h-5" />, value: "∞", label: "Coffee Cups" },
   ];
 
   return (
