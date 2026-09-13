@@ -77,18 +77,29 @@ export function LatestProjects() {
               hover:border-[#ffe400] dark:hover:border-[#ffe400] transition-all duration-300 flex flex-col"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-[#0F172A]">
               <button
                 type="button"
                 onClick={() => setSelectedProject(project)}
-                className="w-full h-full text-left cursor-pointer"
+                className="w-full h-full relative cursor-pointer block"
                 aria-label={`Lihat detail ${project.title}`}
               >
+                {/* Ambient blur fill untuk gambar berbagai rasio */}
+                <div className="absolute inset-0 scale-125 blur-lg opacity-35 dark:opacity-20 pointer-events-none">
+                  <Image
+                    src={project.imageUrl || '/projects/p1.jpg'}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    aria-hidden="true"
+                  />
+                </div>
                 <Image
                   src={project.imageUrl || '/projects/p1.jpg'}
                   alt={project.title}
                   fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-contain p-2 relative z-10 transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </button>
             </div>

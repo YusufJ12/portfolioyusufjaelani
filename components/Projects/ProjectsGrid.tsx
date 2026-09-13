@@ -49,23 +49,33 @@ export function ProjectsGrid() {
               shadow-sm hover:shadow-md flex flex-col"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-[#0F172A]">
               <button
                 type="button"
                 onClick={() => setSelectedProject(project)}
-                className="w-full h-full text-left cursor-pointer"
+                className="w-full h-full relative cursor-pointer block"
                 aria-label={`Lihat detail ${project.title}`}
               >
+                {/* Ambient blur fill untuk gambar berbagai rasio */}
+                <div className="absolute inset-0 scale-125 blur-lg opacity-35 dark:opacity-20 pointer-events-none">
+                  <Image
+                    src={project.image || project.imageUrl || '/projects/p1.jpg'}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    aria-hidden="true"
+                  />
+                </div>
                 <Image
                   src={project.image || project.imageUrl || '/projects/p1.jpg'}
                   alt={project.title}
-                  width={400}
-                  height={250}
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  className="object-contain p-2 relative z-10 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </button>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 
-                transition-opacity duration-300 flex items-end justify-start p-4 pointer-events-none">
+                transition-opacity duration-300 flex items-end justify-start p-4 pointer-events-none z-20">
                 <div className="flex gap-2 pointer-events-auto">
                   {project.liveUrl && (
                     <MagneticLink

@@ -32,17 +32,27 @@ export function FeaturedProjects() {
           >
             <div className="grid md:grid-cols-2 gap-6">
               {/* Image Section */}
-              <div className="relative aspect-[16/10] md:aspect-auto overflow-hidden">
+              <div className="relative aspect-[16/10] md:aspect-auto overflow-hidden bg-gray-100 dark:bg-[#0F172A] min-h-[240px]">
+                {/* Ambient blur fill */}
+                <div className="absolute inset-0 scale-125 blur-lg opacity-35 dark:opacity-20 pointer-events-none">
+                  <Image
+                    src={project.image}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    aria-hidden="true"
+                  />
+                </div>
                 <Image
                   src={project.image}
                   alt={project.title}
-                  width={600}
-                  height={400}
-                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  fill
+                  className="object-contain p-3 relative z-10 group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div
                   className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 
-                  transition-opacity duration-300 flex items-end justify-start p-6"
+                  transition-opacity duration-300 flex items-end justify-start p-6 z-20"
                 >
                   <div className="flex gap-3">
                     <MagneticLink

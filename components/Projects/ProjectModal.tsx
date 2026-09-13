@@ -58,18 +58,29 @@ export function ProjectModal({ project, onClose }: Readonly<ProjectModalProps>) 
       <div
         className="relative z-10 bg-white dark:bg-[#131C31] border border-gray-100 dark:border-[#222F43] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-scaleIn"
       >
-        <div className="relative aspect-[16/9] w-full bg-gray-100 dark:bg-[#0F172A] overflow-hidden flex-shrink-0">
+        <div className="relative h-64 sm:h-80 md:h-96 w-full bg-gray-100 dark:bg-[#0F172A] overflow-hidden flex-shrink-0 flex items-center justify-center">
+          {/* Blurred ambient fill */}
+          <div className="absolute inset-0 scale-110 blur-2xl opacity-40 dark:opacity-25 pointer-events-none">
+            <Image
+              src={imgSrc}
+              alt=""
+              fill
+              className="object-cover"
+              aria-hidden="true"
+            />
+          </div>
+          {/* Full uncropped image */}
           <Image
             src={imgSrc}
             alt={project.title}
             fill
-            className="object-cover"
+            className="object-contain relative z-10 p-2"
             sizes="(max-width: 768px) 100vw, 672px"
           />
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-xl bg-black/50 hover:bg-black/75 text-white transition-all hover:scale-105 z-10"
+            className="absolute top-4 right-4 p-2 rounded-xl bg-black/60 hover:bg-black/80 text-white transition-all hover:scale-105 z-20"
             aria-label="Tutup"
           >
             <X className="w-5 h-5" />
