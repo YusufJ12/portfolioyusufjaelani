@@ -10,6 +10,7 @@ interface Profile {
 
 export function AboutImage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -21,10 +22,20 @@ export function AboutImage() {
         }
       } catch (error) {
         console.error("Failed to fetch profile image:", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchProfile();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="relative group">
+        <div className="relative z-10 rounded-2xl overflow-hidden aspect-[5/6] bg-gray-200 dark:bg-[#131C31] animate-pulse" />
+      </div>
+    );
+  }
 
   const src = profile?.avatarUrl || ProfileImage;
 

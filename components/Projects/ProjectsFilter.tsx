@@ -37,9 +37,9 @@ export function ProjectsFilter() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 py-2">
         {/* Filters */}
         <div className="flex flex-wrap gap-3">
-          {filters.map((filter, index) => (
+          {filters.map((filter) => (
             <button
-              key={index}
+              key={filter}
               onClick={() => setActiveFilter(filter)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
                 ${

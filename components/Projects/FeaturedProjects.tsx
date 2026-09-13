@@ -1,5 +1,6 @@
 import React from "react";
-import { Star, ExternalLink, Github } from "lucide-react";
+import { Star, ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons/SocialIcons";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 import { projects } from "@/data/projects";
@@ -22,7 +23,7 @@ export function FeaturedProjects() {
       <div className="grid grid-cols-1 gap-8">
         {featuredProjects.map((project, index) => (
           <div
-            key={index}
+            key={project.title}
             className="group relative bg-white dark:bg-[#131C31] rounded-2xl overflow-hidden
               border border-gray-100 dark:border-[#222F43] hover:border-[#ffe400] 
               dark:hover:border-[#ffe400] transition-all duration-300 animate-slideInUp
@@ -54,7 +55,7 @@ export function FeaturedProjects() {
                       href={project.githubUrl}
                       className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
                     >
-                      <Github className="w-5 h-5 text-[#101010]" />
+                      <GithubIcon className="w-5 h-5 text-[#101010]" />
                     </MagneticLink>
                   </div>
                 </div>
@@ -69,9 +70,9 @@ export function FeaturedProjects() {
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-auto">
-                  {project.tags.map((tag, i) => (
+                  {project.tags.map((tag) => (
                     <span
-                      key={i}
+                      key={`${project.title}-${tag}`}
                       className="px-3 py-1 bg-[#ffe400] bg-opacity-10 text-[#101010] 
                         dark:text-[#94A9C9] rounded-lg text-sm font-medium"
                     >

@@ -318,10 +318,13 @@ export async function POST() {
       success: true,
       message: "Database successfully updated with CV data!",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error syncing CV to database:", error);
     return NextResponse.json(
-      { error: "Failed to update database", details: error?.message },
+      {
+        error: "Failed to update database",
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

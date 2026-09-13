@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       subject.length > 100 ||
       message.length > 1000 ||
       email.length > 254 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email)
     ) {
       return NextResponse.json(
         { error: "Invalid contact form data" },

@@ -30,7 +30,7 @@ export function AboutStats() {
     <div className="grid grid-cols-2 gap-4">
       {stats.map((stat, index) => (
         <div
-          key={index}
+          key={stat.label}
           className="group p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-100 
             dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400] 
             transition-all duration-300 animate-slideInUp"

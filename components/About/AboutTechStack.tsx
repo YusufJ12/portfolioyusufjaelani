@@ -190,72 +190,74 @@ export function AboutTechStack() {
         </h3>
       </div>
 
-      {/* Category filter tabs */}
-      <div className="flex flex-wrap gap-1.5 mb-5">
-        {categories.map((cat, idx) => (
-          <button
-            key={idx}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
-              activeCategory === cat
-                ? "bg-[#ffe400] text-[#101010] font-semibold shadow-sm"
-                : "bg-white dark:bg-[#131C31] text-gray-600 dark:text-[#66768f] border border-gray-200 dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400]"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <Loader2 className="w-6 h-6 animate-spin text-[#ffe400]" />
         </div>
       ) : (
-        <div className="space-y-4">
-          {filteredSkills.map((skill, index) => {
-            const IconComponent = iconMap[skill.icon] || Code2;
-            return (
-              <div
-                key={skill.id || index}
-                className="group p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-100 
-                  dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400] 
-                  transition-all duration-300 animate-slideInRight"
-                style={{ animationDelay: `${index * 0.08}s` }}
+        <>
+          {/* Category filter tabs */}
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  activeCategory === cat
+                    ? "bg-[#ffe400] text-[#101010] font-semibold shadow-sm"
+                    : "bg-white dark:bg-[#131C31] text-gray-600 dark:text-[#66768f] border border-gray-200 dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400]"
+                }`}
               >
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="p-2 bg-[#ffe400]/10 rounded-lg text-[#ffe400] group-hover:bg-[#ffe400]/20 transition-colors">
-                    <IconComponent className="w-4 h-4 text-[#ffe400]" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-sm text-[#101010] dark:text-[#94A9C9]">
-                      {skill.category || skill.name}
-                    </h4>
-                    {skill.description && (
-                      <p className="text-xs text-gray-500 dark:text-[#66768f] line-clamp-1">
-                        {skill.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                {cat}
+              </button>
+            ))}
+          </div>
 
-                <div className="flex flex-wrap gap-1.5">
-                  {skill.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 text-xs font-medium rounded-lg bg-gray-50 dark:bg-[#18233a] 
-                        text-gray-700 dark:text-[#94A9C9] border border-gray-200/60 dark:border-[#26354d] 
-                        hover:border-[#ffe400] dark:hover:border-[#ffe400] hover:text-[#ffe400] 
-                        dark:hover:text-[#ffe400] transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+          <div className="space-y-4">
+            {filteredSkills.map((skill, index) => {
+              const IconComponent = iconMap[skill.icon] || Code2;
+              return (
+                <div
+                  key={skill.id || skill.name || index}
+                  className="group p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-100 
+                    dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400] 
+                    transition-all duration-300 animate-slideInRight"
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                >
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="p-2 bg-[#ffe400]/10 rounded-lg text-[#ffe400] group-hover:bg-[#ffe400]/20 transition-colors">
+                      <IconComponent className="w-4 h-4 text-[#ffe400]" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm text-[#101010] dark:text-[#94A9C9]">
+                        {skill.category || skill.name}
+                      </h4>
+                      {skill.description && (
+                        <p className="text-xs text-gray-500 dark:text-[#66768f] line-clamp-1">
+                          {skill.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {skill.technologies.map((tech) => (
+                      <span
+                        key={`${skill.id || skill.name}-${tech}`}
+                        className="px-2.5 py-1 text-xs font-medium rounded-lg bg-gray-50 dark:bg-[#18233a] 
+                          text-gray-700 dark:text-[#94A9C9] border border-gray-200/60 dark:border-[#26354d] 
+                          hover:border-[#ffe400] dark:hover:border-[#ffe400] hover:text-[#ffe400] 
+                          dark:hover:text-[#ffe400] transition-colors"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

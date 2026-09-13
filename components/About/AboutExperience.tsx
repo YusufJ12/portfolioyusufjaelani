@@ -161,9 +161,9 @@ export function AboutExperience() {
             </p>
 
             <ul className="space-y-2">
-              {exp.achievements.map((achievement, i) => (
+              {exp.achievements.map((achievement) => (
                 <li
-                  key={i}
+                  key={`${exp.id}-${achievement}`}
                   className="flex items-center gap-2 text-sm text-gray-500 dark:text-[#66768f]"
                 >
                   <span className="w-1.5 h-1.5 bg-[#ffe400] rounded-full"></span>
@@ -178,8 +178,8 @@ export function AboutExperience() {
                   Website Terkait:
                 </h5>
                 <ul className="mt-2 space-y-1">
-                  {exp.websiteLinks.map((link, idx) => (
-                    <li key={idx}>
+                  {exp.websiteLinks.map((link) => (
+                    <li key={`${exp.id}-${link.url || link.name}`}>
                       <a
                         href={link.url}
                         target="_blank"

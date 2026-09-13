@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useState, useMemo, useEffect } from 'react';
+import React, { createContext, useState, useMemo, useEffect, useCallback } from 'react';
 
 const ITEMS_PER_PAGE = 9;
 
@@ -36,14 +36,14 @@ type ProjectsFilterContextType = {
 
 export const ProjectsFilterContext = createContext<ProjectsFilterContextType | null>(null);
 
-export function ProjectsFilterProvider({ children }: { children: React.ReactNode }) {
+export function ProjectsFilterProvider({ children }: { readonly children: React.ReactNode }) {
   const [projects, setProjects] = useState<DisplayProject[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilterState] = useState("All");
-  const [searchQuery, setSearchQueryState] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filters = ["All", "Web", "Mobile", "UI/UX", "Other"];
+  const filters = useMemo(() => ["All", "Web", "Mobile", "UI/UX", "Other"], []);
   
   // Fetch projects from API
   useEffect(() => {
@@ -90,34 +90,49 @@ export function ProjectsFilterProvider({ children }: { children: React.ReactNode
     );
   }, [filteredProjects, currentPage]);
 
-  const setActiveFilter = (filter: string) => {
-    setActiveFilterState(filter);
+  const handleFilterSelect = useCallback((filter: string) => {
+    setActiveFilter(filter);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const setSearchQuery = (query: string) => {
-    setSearchQueryState(query);
+  const handleSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const value = {
-    activeFilter,
-    setActiveFilter,
-    searchQuery,
-    setSearchQuery,
-    currentPage,
-    totalPages,
-    handlePageChange,
-    filters,
-    filteredProjects: paginatedProjects,
-    totalProjects: filteredProjects.length,
-    loading
-  };
+  const value = useMemo(
+    () => ({
+      activeFilter,
+      setActiveFilter: handleFilterSelect,
+      searchQuery,
+      setSearchQuery: handleSearchChange,
+      currentPage,
+      totalPages,
+      handlePageChange,
+      filters,
+      filteredProjects: paginatedProjects,
+      totalProjects: filteredProjects.length,
+      loading,
+    }),
+    [
+      activeFilter,
+      handleFilterSelect,
+      searchQuery,
+      handleSearchChange,
+      currentPage,
+      totalPages,
+      handlePageChange,
+      filters,
+      paginatedProjects,
+      filteredProjects.length,
+      loading,
+    ]
+  );
 
   return (
     <ProjectsFilterContext.Provider value={value}>

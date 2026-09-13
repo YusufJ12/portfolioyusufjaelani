@@ -1,8 +1,28 @@
-import React from "react";
-import { Github, ExternalLink } from "lucide-react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/icons/SocialIcons";
 import MagneticLink from "../ui/MagneticLink";
 
 export function ProjectsIntro() {
+  const [githubUrl, setGithubUrl] = useState("https://github.com/YusufJ12");
+
+  useEffect(() => {
+    fetch("/api/social-links")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((links) => {
+        if (Array.isArray(links)) {
+          const gh = links.find(
+            (l: { platform?: string; url?: string }) =>
+              l.platform?.toLowerCase() === "github"
+          );
+          if (gh?.url) setGithubUrl(gh.url);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="space-y-6 animate-slideInUp">
       <div className="relative">
@@ -14,11 +34,11 @@ export function ProjectsIntro() {
 
       <div className="flex justify-center gap-4 pt-4">
         <MagneticLink
-          href="https://github.com/YusufJ12" // Ganti dengan URL GitHub kamu
+          href={githubUrl}
           className="inline-flex items-center gap-2 px-6 py-3 bg-[#ffe400] dark:bg-[#ffe400] 
             text-[#101010] rounded-full font-semibold hover:scale-105 transition-transform"
         >
-          Profil GitHub <Github className="w-4 h-4" />
+          Profil GitHub <GithubIcon className="w-4 h-4" />
         </MagneticLink>
 
         <MagneticLink

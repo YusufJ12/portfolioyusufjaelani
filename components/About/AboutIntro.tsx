@@ -33,7 +33,11 @@ export function AboutIntro() {
 
   const handleDownload = (e: React.MouseEvent) => {
     e.preventDefault();
-    const resumeUrl = profile?.resumeUrl || "/resume.pdf";
+    const resumeUrl = profile?.resumeUrl;
+    if (!resumeUrl) {
+      alert("Resume belum tersedia");
+      return;
+    }
 
     // Deteksi apakah pengguna menggunakan perangkat mobile
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -62,9 +66,7 @@ export function AboutIntro() {
     );
   }
 
-  const description =
-    profile?.description ||
-    "Senior Software Engineer & System Architect dengan pengalaman lebih dari 5 tahun dalam rekayasa perangkat lunak enterprise, perancangan arsitektur Modular Monolith (Laravel 12) dan Distributed Microservices (.NET / ASP.NET Core). Berpengalaman memimpin implementasi backend performa tinggi, otomatisasi transaksi perbankan multi-bank via pemrosesan antrean asynchronous, integrasi sistem AI (RAG), serta protokol sinkronisasi data offline-first. Terbiasa menerapkan standar Clean Architecture, static analysis, dan automated testing untuk menjamin keandalan sistem jangka panjang.";
+  const description = profile?.description || "";
 
   return (
     <div className="space-y-6">

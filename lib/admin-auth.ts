@@ -1,4 +1,4 @@
-import { createHmac, createHash, timingSafeEqual } from "crypto";
+import { createHmac, createHash, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 

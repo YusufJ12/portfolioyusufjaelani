@@ -39,38 +39,43 @@ export function ContactInfo() {
     );
   }
 
-  const email = profile?.email || "yusufjaelani@gmail.com";
-  const phone = profile?.phone || "+62 822 4399 3431";
-  const location = profile?.location || "Semarang, Jawa Tengah";
+  const email = profile?.email || "";
+  const phone = profile?.phone || "";
+  const location = profile?.location || "";
   
   // Clean phone number for WhatsApp link
   const waPhone = phone.replace(/\D/g, "");
 
   const contactDetails = [
-    {
+    email ? {
       Icon: Mail,
       title: "Email",
       value: email,
       href: `mailto:${email}`
-    },
-    {
+    } : null,
+    location ? {
       Icon: MapPin,
       title: "Location",
       value: location
-    },
-    {
+    } : null,
+    phone ? {
       Icon: Phone,
       title: "Phone",
       value: phone,
       href: `tel:${phone}`
-    },
-    {
+    } : null,
+    phone ? {
       Icon: MessageCircle,
       title: "WhatsApp",
       value: phone,
       href: `https://wa.me/${waPhone}`
-    }
-  ];
+    } : null
+  ].filter(Boolean) as {
+    Icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    value: string;
+    href?: string;
+  }[];
 
   return (
     <div className="space-y-6">
@@ -82,9 +87,9 @@ export function ContactInfo() {
       </div>
 
       <div className="grid gap-6">
-        {contactDetails.map((detail, index) => (
+        {contactDetails.map((detail) => (
           <div
-            key={index}
+            key={detail.title}
             className="group p-4 bg-white dark:bg-[#131C31] rounded-xl border border-gray-100 
               dark:border-[#222F43] hover:border-[#ffe400] dark:hover:border-[#ffe400] 
               transition-all duration-300"

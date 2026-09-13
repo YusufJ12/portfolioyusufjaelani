@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Github, ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
+import { GithubIcon } from "@/components/icons/SocialIcons";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 import { useProjectsFilter } from "@/hooks/useProjectsFilter";
@@ -39,7 +40,7 @@ export function ProjectsGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project, index) => (
           <div
-            key={project.id || index}
+            key={project.id}
             className="group relative bg-white dark:bg-[#131C31] rounded-xl overflow-hidden
               border border-gray-100 dark:border-[#222F43] hover:border-[#ffe400] 
               dark:hover:border-[#ffe400] transition-all duration-300 animate-slideInUp
@@ -70,7 +71,7 @@ export function ProjectsGrid() {
                       href={project.githubUrl}
                       className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
                     >
-                      <Github className="w-4 h-4 text-[#101010]" />
+                      <GithubIcon className="w-4 h-4 text-[#101010]" />
                     </MagneticLink>
                   )}
                 </div>
@@ -85,9 +86,9 @@ export function ProjectsGrid() {
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {project.tags.slice(0, 3).map((tag: string, i: number) => (
+                {project.tags.slice(0, 3).map((tag: string) => (
                   <span
-                    key={i}
+                    key={`${project.id}-${tag}`}
                     className="px-2 py-1 bg-[#ffe400] bg-opacity-10 text-[#101010] 
                       dark:text-[#94A9C9] rounded-lg text-xs font-medium"
                   >

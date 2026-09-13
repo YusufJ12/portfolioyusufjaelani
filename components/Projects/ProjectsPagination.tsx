@@ -2,9 +2,9 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
+  readonly currentPage: number;
+  readonly totalPages: number;
+  readonly onPageChange: (page: number) => void;
 }
 
 export function ProjectsPagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
@@ -28,6 +28,12 @@ export function ProjectsPagination({ currentPage, totalPages, onPageChange }: Pa
     );
   };
 
+  const getPageButtonClass = (page: number | string) => {
+    if (typeof page !== 'number') return 'cursor-default';
+    if (page === currentPage) return 'bg-[#ffe400] text-[#101010]';
+    return 'hover:bg-[#ffe400] hover:text-[#101010]';
+  };
+
   return (
     <div className="flex justify-center items-center gap-2 mt-12">
       <button
@@ -44,15 +50,9 @@ export function ProjectsPagination({ currentPage, totalPages, onPageChange }: Pa
 
       {renderPageNumbers().map((page, index) => (
         <button
-          key={index}
+          key={`page-${page}-${index}`}
           onClick={() => typeof page === 'number' && onPageChange(page)}
-          className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300
-            ${typeof page === 'number' && page === currentPage
-              ? 'bg-[#ffe400] text-[#101010]'
-              : typeof page === 'number'
-                ? 'hover:bg-[#ffe400] hover:text-[#101010]'
-                : 'cursor-default'
-            }`}
+          className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300 ${getPageButtonClass(page)}`}
         >
           {page}
         </button>

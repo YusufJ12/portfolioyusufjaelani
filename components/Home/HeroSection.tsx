@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/SocialIcons";
 import MagneticLink from "../ui/MagneticLink";
 import AnimatedText from "../ui/AnimatedText";
 import { TypewriterText } from "../ui/TypewriterText";
@@ -25,8 +26,8 @@ interface SocialLink {
 }
 
 const iconMap: Record<string, React.ElementType> = {
-  github: Github,
-  linkedin: Linkedin,
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
   mail: Mail,
   email: Mail,
 };
@@ -34,7 +35,7 @@ const iconMap: Record<string, React.ElementType> = {
 export function HeroSection() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -63,29 +64,42 @@ export function HeroSection() {
     fetchData();
   }, []);
 
-  // Default fallback values - use correct field names from database
-  const name = profile?.name || "Yusuf Jaelani";
-  // title can be comma-separated for multiple phrases in typewriter
-  const title = profile?.title || "Senior Software Engineer,System Architect";
-  // heroTagline is used for the availability badge
-  const heroTagline = profile?.heroTagline || "Tersedia untuk pekerjaan lepas (freelance)";
-  const description = profile?.description || "Senior Software Engineer & System Architect dengan pengalaman lebih dari 5 tahun dalam rekayasa perangkat lunak enterprise, perancangan arsitektur Modular Monolith (Laravel 12) dan Distributed Microservices (.NET / ASP.NET Core).";
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center min-h-[calc(100vh-9rem)]">
+        <div className="relative z-10 text-center space-y-6 max-w-6xl mx-auto px-6 w-full flex flex-col items-center">
+          <div className="h-9 w-64 rounded-full bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+          <div className="space-y-4 w-full flex flex-col items-center">
+            <div className="h-12 md:h-16 w-72 md:w-96 rounded-2xl bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+            <div className="h-8 md:h-10 w-56 md:w-80 rounded-xl bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+          </div>
+          <div className="space-y-2 w-full max-w-2xl flex flex-col items-center">
+            <div className="h-4 w-full rounded bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+            <div className="h-4 w-5/6 rounded bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+          </div>
+          <div className="flex gap-4 pt-4">
+            <div className="h-12 w-36 rounded-full bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+            <div className="h-12 w-36 rounded-full bg-gray-200 dark:bg-sa-dark-border/40 animate-pulse" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const name = profile?.name || "";
+  const title = profile?.title || "";
+  const heroTagline = profile?.heroTagline || "";
+  const description = profile?.description || "";
 
   // Parse title into array for typewriter (comma-separated)
-  const phrases = title.split(",").map((s: string) => s.trim()).filter(Boolean);
+  const phrases = title ? title.split(",").map((s: string) => s.trim()).filter(Boolean) : [];
 
   // Build social links with icons
-  const displayLinks = socialLinks.length > 0 
-    ? socialLinks.map((link) => ({
-        Icon: iconMap[link.icon?.toLowerCase()] || iconMap[link.platform?.toLowerCase()] || Mail,
-        href: link.url,
-        label: link.platform,
-      }))
-    : [
-        { Icon: Github, href: "https://github.com/YusufJ12", label: "GitHub" },
-        { Icon: Linkedin, href: "https://www.linkedin.com/in/yusuf-jaelani-0311b6191/", label: "LinkedIn" },
-        { Icon: Mail, href: "mailto:yusufjaelani@gmail.com", label: "Email" },
-      ];
+  const displayLinks = socialLinks.map((link) => ({
+    Icon: iconMap[link.icon?.toLowerCase()] || iconMap[link.platform?.toLowerCase()] || Mail,
+    href: link.url,
+    label: link.platform,
+  }));
 
   return (
     <div className="flex flex-col justify-center min-h-[calc(100vh-9rem)]">
@@ -147,9 +161,9 @@ export function HeroSection() {
           </Link>
 
           <div className="flex gap-3">
-            {displayLinks.map((link, index) => (
+            {displayLinks.map((link) => (
               <MagneticLink
-                key={index}
+                key={link.label || link.href}
                 href={link.href}
                 className="p-3 rounded-lg bg-white dark:bg-sa-dark-foregroung border 
                   border-gray-200 dark:border-sa-dark-border hover:border-[#ffe400]

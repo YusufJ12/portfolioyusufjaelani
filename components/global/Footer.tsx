@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { Mail, ArrowUp } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/icons/SocialIcons";
 import MagneticLink from "../ui/MagneticLink";
 import Link from "next/link";
 
@@ -17,8 +18,8 @@ interface Profile {
 }
 
 const iconMap: Record<string, React.ElementType> = {
-  github: Github,
-  linkedin: Linkedin,
+  github: GithubIcon,
+  linkedin: LinkedinIcon,
   mail: Mail,
   email: Mail,
 };
@@ -26,10 +27,9 @@ const iconMap: Record<string, React.ElementType> = {
 export function Footer() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     async function fetchData() {
       try {
         const [profileRes, linksRes] = await Promise.all([
@@ -41,6 +41,8 @@ export function Footer() {
         if (linksRes.ok) setSocialLinks(await linksRes.json());
       } catch (error) {
         console.error("Failed to fetch footer data:", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchData();
@@ -52,22 +54,7 @@ export function Footer() {
     }
   };
 
-  const name = profile?.name || "Yusuf Jaelani";
-  const tagline = profile?.title || "Senior Software Engineer & System Architect";
-
-  const displayLinks = socialLinks.length > 0 
-    ? socialLinks.map((link) => ({
-        Icon: iconMap[link.icon?.toLowerCase()] || iconMap[link.platform?.toLowerCase()] || Mail,
-        href: link.url,
-        label: link.platform,
-      }))
-    : [
-        { Icon: Github, href: "https://github.com/YusufJ12", label: "GitHub" },
-        { Icon: Linkedin, href: "https://www.linkedin.com/in/yusuf-jaelani-0311b6191/", label: "LinkedIn" },
-        { Icon: Mail, href: "mailto:yusufjaelani@gmail.com", label: "Email" },
-      ];
-
-  if (!mounted) {
+  if (loading) {
     return (
       <footer className="w-full bg-white dark:bg-[#131C31] border-t border-gray-100 dark:border-[#222F43]">
         <div className="max-w-6xl mx-auto px-6 py-12 h-64 flex items-center justify-center">
@@ -76,6 +63,15 @@ export function Footer() {
       </footer>
     );
   }
+
+  const name = profile?.name || "";
+  const tagline = profile?.title || "";
+
+  const displayLinks = socialLinks.map((link) => ({
+    Icon: iconMap[link.icon?.toLowerCase()] || iconMap[link.platform?.toLowerCase()] || Mail,
+    href: link.url,
+    label: link.platform,
+  }));
 
   return (
     <footer className="w-full bg-white dark:bg-[#131C31] border-t border-gray-100 dark:border-[#222F43]">
@@ -126,9 +122,9 @@ export function Footer() {
               Connect
             </h4>
             <div className="flex gap-3">
-              {displayLinks.map((link, index) => (
+              {displayLinks.map((link) => (
                 <MagneticLink
-                  key={index}
+                  key={link.label || link.href}
                   href={link.href}
                   className="p-2 rounded-lg bg-[#ffe400] bg-opacity-10 hover:bg-opacity-20
                     text-[#101010] dark:text-[#ffe400] transition-all duration-300

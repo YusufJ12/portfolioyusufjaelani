@@ -11,9 +11,9 @@ export function HeroStats() {
     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto mt-16 animate-slideInUp"
       style={{ animationDelay: '0.8s' }}
     >
-      {stats.map((stat, index) => (
+      {stats.map((stat) => (
         <div
-          key={index}
+          key={stat.label}
           className="relative group"
         >
           <div className="absolute inset-0 bg-[#ffe400] rounded-2xl rotate-1 

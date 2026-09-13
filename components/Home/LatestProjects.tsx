@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ArrowRight, Github, ExternalLink, Loader2 } from "lucide-react";
+import { ArrowRight, ExternalLink, Loader2 } from "lucide-react";
+import { GithubIcon } from "@/components/icons/SocialIcons";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 
@@ -92,9 +93,9 @@ export function LatestProjects() {
               </p>
 
               <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map((tag, i) => (
+                {project.tags.map((tag) => (
                   <span
-                    key={i}
+                    key={`${project.id}-${tag}`}
                     className="px-3 py-1 bg-[#ffe400] bg-opacity-10 text-[#101010] 
                       dark:text-[#94A9C9] rounded-lg text-sm font-medium"
                   >
@@ -110,7 +111,7 @@ export function LatestProjects() {
                     className="p-2 rounded-lg hover:bg-[#ffe400] hover:bg-opacity-10 
                       text-[#101010] dark:text-[#94A9C9] transition-all duration-300"
                   >
-                    <Github className="w-5 h-5" />
+                    <GithubIcon className="w-5 h-5" />
                   </MagneticLink>
                 )}
                 {project.liveUrl && (

@@ -98,7 +98,7 @@ export const projects: Project[] = [
     image: p7,
     tags: ["CodeIgniter", "Bootstrap", "MySql", "PHP"],
     category: "Web",
-    liveUrl: "http://sdn1kliris.epizy.com/",
+    liveUrl: "https://sdn1kliris.epizy.com/",
     githubUrl: "",
   },
   {
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     image: p11,
     tags: ["CodeIgniter", "Bootstrap", "MySql", "PHP"],
     category: "Web",
-    liveUrl: "http://sistempakarpenyakitayam.epizy.com/",
+    liveUrl: "https://sistempakarpenyakitayam.epizy.com/",
     githubUrl: "",
   },
   {

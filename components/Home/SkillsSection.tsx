@@ -152,9 +152,9 @@ export function SkillsSection() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                  {skill.technologies.map((tech, i) => (
+                  {skill.technologies.map((tech) => (
                     <span
-                      key={i}
+                      key={`${skill.name}-${tech}`}
                       className="px-3 py-1 text-xs rounded-full bg-[#ffe400]/10 
                         text-[#101010] dark:text-[#94A9C9] font-medium
                         group-hover:bg-[#ffe400]/20 transition-colors duration-300"

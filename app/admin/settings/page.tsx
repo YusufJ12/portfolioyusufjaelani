@@ -168,12 +168,12 @@ export default function AdminSettingsPage() {
           text: data.error || data.details || "Terjadi kesalahan saat menyinkronkan data.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       MySwal.fire({
         ...swalConfig,
         icon: "error",
         title: "Error",
-        text: err?.message || "Koneksi ke server gagal.",
+        text: err instanceof Error ? err.message : "Koneksi ke server gagal.",
       });
     } finally {
       setSyncing(false);
@@ -201,10 +201,11 @@ export default function AdminSettingsPage() {
           <div className="space-y-4">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
+              <label htmlFor="email-address" className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
                 Email Address
               </label>
               <input
+                id="email-address"
                 type="email"
                 value={formData.email}
                 onChange={(e) =>
@@ -217,11 +218,12 @@ export default function AdminSettingsPage() {
 
             {/* Current Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
+              <label htmlFor="current-password" className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
                 Current Password
               </label>
               <div className="relative">
                 <input
+                  id="current-password"
                   type={showCurrentPassword ? "text" : "password"}
                   value={formData.currentPassword}
                   onChange={(e) =>
@@ -243,11 +245,12 @@ export default function AdminSettingsPage() {
 
             {/* New Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
+              <label htmlFor="new-password" className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
                 New Password (optional)
               </label>
               <div className="relative">
                 <input
+                  id="new-password"
                   type={showNewPassword ? "text" : "password"}
                   value={formData.newPassword}
                   onChange={(e) =>
@@ -268,11 +271,12 @@ export default function AdminSettingsPage() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
+              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-600 dark:text-[#66768f] mb-2">
                 Confirm New Password
               </label>
               <div className="relative">
                 <input
+                  id="confirm-password"
                   type={showConfirmPassword ? "text" : "password"}
                   value={formData.confirmPassword}
                   onChange={(e) =>
