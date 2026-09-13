@@ -5,6 +5,7 @@ import { ArrowRight, ExternalLink, Loader2 } from "lucide-react";
 import { GithubIcon } from "@/components/icons/SocialIcons";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
+import { ProjectModal, ProjectModalData } from "../Projects/ProjectModal";
 
 type Project = {
   id: number;
@@ -19,6 +20,7 @@ type Project = {
 
 export function LatestProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<ProjectModalData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -72,25 +74,38 @@ export function LatestProjects() {
             key={project.id}
             className="group relative animate-slideInUp bg-white dark:bg-[#131C31] 
               rounded-xl overflow-hidden border border-gray-100 dark:border-[#222F43] 
-              hover:border-[#ffe400] dark:hover:border-[#ffe400] transition-all duration-300"
+              hover:border-[#ffe400] dark:hover:border-[#ffe400] transition-all duration-300 flex flex-col"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="relative h-48 overflow-hidden">
-              <Image
-                src={project.imageUrl || '/projects/p1.jpg'}
-                alt={project.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
+              <button
+                type="button"
+                onClick={() => setSelectedProject(project)}
+                className="w-full h-full text-left cursor-pointer"
+                aria-label={`Lihat detail ${project.title}`}
+              >
+                <Image
+                  src={project.imageUrl || '/projects/p1.jpg'}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </button>
             </div>
 
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-[#101010] dark:text-[#94A9C9]">
-                {project.title}
-              </h3>
-              <p className="text-gray-600 dark:text-[#66768f] mb-4">
-                {project.description}
-              </p>
+            <div className="p-6 flex flex-col flex-grow">
+              <button
+                type="button"
+                onClick={() => setSelectedProject(project)}
+                className="text-left flex-grow flex flex-col mb-4 group/btn cursor-pointer"
+              >
+                <h3 className="text-xl font-semibold mb-2 text-[#101010] dark:text-[#94A9C9] group-hover/btn:text-[#ffe400] transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-gray-600 dark:text-[#66768f] line-clamp-3">
+                  {project.description}
+                </p>
+              </button>
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map((tag) => (
@@ -128,6 +143,11 @@ export function LatestProjects() {
           </div>
         ))}
       </div>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </div>
   );
 }

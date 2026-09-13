@@ -1,14 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { GithubIcon } from "@/components/icons/SocialIcons";
 import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 import { useProjectsFilter } from "@/hooks/useProjectsFilter";
 import { ProjectsPagination } from "./ProjectsPagination";
+import { ProjectModal, ProjectModalData } from "./ProjectModal";
 
 export function ProjectsGrid() {
+  const [selectedProject, setSelectedProject] = useState<ProjectModalData | null>(null);
   const { 
     filteredProjects,
     currentPage,
@@ -48,16 +50,23 @@ export function ProjectsGrid() {
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="relative aspect-[16/10] overflow-hidden">
-              <Image
-                src={project.image || project.imageUrl || '/projects/p1.jpg'}
-                alt={project.title}
-                width={400}
-                height={250}
-                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-              />
+              <button
+                type="button"
+                onClick={() => setSelectedProject(project)}
+                className="w-full h-full text-left cursor-pointer"
+                aria-label={`Lihat detail ${project.title}`}
+              >
+                <Image
+                  src={project.image || project.imageUrl || '/projects/p1.jpg'}
+                  alt={project.title}
+                  width={400}
+                  height={250}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                />
+              </button>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 
-                transition-opacity duration-300 flex items-end justify-start p-4">
-                <div className="flex gap-2">
+                transition-opacity duration-300 flex items-end justify-start p-4 pointer-events-none">
+                <div className="flex gap-2 pointer-events-auto">
                   {project.liveUrl && (
                     <MagneticLink
                       href={project.liveUrl}
@@ -79,12 +88,18 @@ export function ProjectsGrid() {
             </div>
 
             <div className="p-5 flex flex-col flex-grow">
-              <h4 className="text-lg font-semibold text-[#101010] dark:text-[#94A9C9] mb-2">
-                {project.title}
-              </h4>
-              <p className="text-gray-600 dark:text-[#66768f] mb-4 text-sm line-clamp-2 flex-grow">
-                {project.description}
-              </p>
+              <button
+                type="button"
+                onClick={() => setSelectedProject(project)}
+                className="text-left flex-grow flex flex-col mb-4 group/btn cursor-pointer"
+              >
+                <h4 className="text-lg font-semibold text-[#101010] dark:text-[#94A9C9] mb-2 group-hover/btn:text-[#ffe400] transition-colors">
+                  {project.title}
+                </h4>
+                <p className="text-gray-600 dark:text-[#66768f] text-sm line-clamp-2 flex-grow">
+                  {project.description}
+                </p>
+              </button>
               <div className="flex flex-wrap gap-1.5">
                 {project.tags.slice(0, 3).map((tag: string) => (
                   <span
@@ -110,6 +125,11 @@ export function ProjectsGrid() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+      />
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
       />
     </>
   );
